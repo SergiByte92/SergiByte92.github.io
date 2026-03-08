@@ -1,0 +1,1321 @@
+﻿<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Landing CV profesional de Sergi García, Backend Developer .NET Junior especializado en C#/.NET, PostgreSQL y arquitectura mantenible.">
+  <title>Sergi García | Backend Developer .NET Junior</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --bg-soft: #eef2f7;
+      --panel: rgba(255, 255, 255, 0.8);
+      --panel-strong: rgba(255, 255, 255, 0.92);
+      --line: rgba(15, 23, 42, 0.12);
+      --text: #0f172a;
+      --muted: #475569;
+      --accent: #0b2545;
+      --accent-soft: #1e3a5f;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 8% -10%, rgba(30, 64, 175, 0.1), transparent 36%),
+        radial-gradient(circle at 92% 12%, rgba(15, 23, 42, 0.08), transparent 34%),
+        linear-gradient(180deg, #f9fbff 0%, var(--bg) 45%, var(--bg-soft) 100%);
+      font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+      overflow-x: hidden;
+    }
+
+    #network-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.85;
+    }
+
+    .glass {
+      backdrop-filter: blur(8px);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.07);
+    }
+
+    .section-card {
+      background: var(--panel-strong);
+      border: 1px solid var(--line);
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.06);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(12px) scale(0.985);
+      filter: blur(6px);
+      transition: all 0.55s ease;
+      will-change: opacity, transform, filter;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+
+    .card-soft {
+      transform: translateY(10px);
+      filter: none;
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .card-soft.is-visible {
+      transform: translateY(0);
+      filter: none;
+    }
+
+    [data-delay="0"] {
+      transition-delay: 0ms;
+    }
+
+    [data-delay="120"] {
+      transition-delay: 120ms;
+    }
+
+    [data-delay="240"] {
+      transition-delay: 240ms;
+    }
+
+    .chip {
+      border: 1px solid rgba(30, 58, 95, 0.22);
+      background: rgba(255, 255, 255, 0.78);
+      color: var(--accent);
+      opacity: 0;
+      transform: scale(0.96);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .reveal.is-visible .chip {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .chip:nth-child(4n + 1) {
+      transition-delay: 0ms;
+    }
+
+    .chip:nth-child(4n + 2) {
+      transition-delay: 80ms;
+    }
+
+    .chip:nth-child(4n + 3) {
+      transition-delay: 160ms;
+    }
+
+    .chip:nth-child(4n + 4) {
+      transition-delay: 240ms;
+    }
+
+    .icon-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 0.9rem;
+      border: 1px solid rgba(15, 23, 42, 0.18);
+      background: rgba(255, 255, 255, 0.86);
+      color: #1e293b;
+      transition: color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    }
+
+    .icon-link:hover {
+      color: #0b2545;
+      border-color: rgba(11, 37, 69, 0.35);
+      box-shadow: 0 0 0 4px rgba(30, 58, 95, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .icon-link svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .contact-icons {
+      gap: 16px;
+    }
+
+    .contact-icons .icon-link {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .contact-icons .icon-link:hover {
+      transform: scale(1.05);
+    }
+
+    .stack-group {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--line);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+    }
+
+    .tech-grid {
+      display: grid;
+      gap: 0.8rem;
+      grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+    }
+
+    .tech-card {
+      display: grid;
+      place-items: center;
+      text-align: center;
+      gap: 0.4rem;
+      min-height: 108px;
+      border-radius: 1rem;
+      border: 1px solid rgba(30, 58, 95, 0.22);
+      background: rgba(248, 250, 252, 0.9);
+      color: #1e293b;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .tech-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(30, 58, 95, 0.4);
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+    }
+
+    .tech-icon {
+      font-size: 1.75rem;
+      line-height: 1;
+      color: #0f172a;
+    }
+
+    .tech-icon-fallback {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.9rem;
+      height: 1.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 23, 42, 0.2);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .tech-name {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .tech-soon {
+      font-size: 0.68rem;
+      color: #64748b;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .projects-shell {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1.2rem;
+      isolation: isolate;
+      padding: 0.25rem 0;
+    }
+
+    .projects-shell::before,
+    .projects-shell::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 88px;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .projects-shell::before {
+      left: 0;
+      background: linear-gradient(90deg, rgba(248, 250, 252, 0.98), rgba(248, 250, 252, 0));
+    }
+
+    .projects-shell::after {
+      right: 0;
+      background: linear-gradient(270deg, rgba(248, 250, 252, 0.98), rgba(248, 250, 252, 0));
+    }
+
+    .projects-track {
+      display: flex;
+      align-items: stretch;
+      gap: 1rem;
+      width: max-content;
+      padding: 0.25rem 0.7rem 0.85rem;
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .project-item {
+      flex: 0 0 clamp(250px, 30vw, 330px);
+      min-height: 244px;
+      perspective: 1300px;
+    }
+
+    .project-flip {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 1rem;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.22, 1);
+      box-shadow: 0 12px 26px rgba(15, 23, 42, 0.1);
+    }
+
+    .project-item:hover .project-flip,
+    .project-item:focus-within .project-flip {
+      transform: rotateY(180deg);
+    }
+
+    .project-face {
+      position: absolute;
+      inset: 0;
+      border-radius: 1rem;
+      overflow: hidden;
+      backface-visibility: hidden;
+      border: 1px solid rgba(15, 23, 42, 0.14);
+      background: rgba(255, 255, 255, 0.9);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-face--front {
+      transform: rotateY(0deg);
+    }
+
+    .project-face--back {
+      transform: rotateY(180deg);
+      padding: 1rem;
+      background: linear-gradient(160deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.94));
+      color: #e2e8f0;
+      justify-content: space-between;
+    }
+
+    .project-cover {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      display: block;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.12);
+    }
+
+    .project-front-body {
+      padding: 0.78rem 0.9rem 0.88rem;
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .project-title {
+      margin: 0;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.35;
+    }
+
+    .project-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .project-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.17rem 0.42rem;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 23, 42, 0.16);
+      background: rgba(248, 250, 252, 0.95);
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: #334155;
+      letter-spacing: 0.02em;
+    }
+
+    .project-back-title {
+      margin: 0 0 0.45rem;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      letter-spacing: 0.01em;
+    }
+
+    .project-desc {
+      margin: 0;
+      font-size: 0.8rem;
+      line-height: 1.5;
+      color: #cbd5e1;
+      max-width: 36ch;
+    }
+
+    .project-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.34rem 0.62rem;
+      border-radius: 0.6rem;
+      border: 1px solid rgba(226, 232, 240, 0.42);
+      background: rgba(148, 163, 184, 0.12);
+      color: #f8fafc;
+      text-decoration: none;
+      font-size: 0.72rem;
+      font-weight: 700;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .project-link:hover {
+      background: rgba(148, 163, 184, 0.24);
+      border-color: rgba(226, 232, 240, 0.8);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+        filter: none;
+        transition: none;
+      }
+
+      .chip {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+
+      .icon-link {
+        transition: none;
+      }
+
+      .project-flip {
+        transition: none;
+      }
+
+      .project-item:hover .project-flip,
+      .project-item:focus-within .project-flip {
+        transform: none;
+      }
+
+      #network-bg {
+        opacity: 0.45;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .projects-shell::before,
+      .projects-shell::after {
+        width: 38px;
+      }
+
+      .project-item {
+        flex-basis: min(82vw, 300px);
+      }
+    }
+  </style>
+</head>
+<body class="antialiased">
+  <canvas id="network-bg" aria-hidden="true"></canvas>
+
+  <header class="sticky top-0 z-50 border-b border-slate-300/60 bg-slate-100/80">
+    <div class="mx-auto flex w-[min(1120px,calc(100%-2rem))] items-center justify-between py-4">
+      <a href="#hero" class="text-sm font-bold tracking-wide text-slate-800">Sergi García / CV</a>
+      <nav class="hidden items-center gap-6 text-sm font-semibold text-slate-600 md:flex">
+        <a href="#hero" class="hover:text-slate-900">Inicio</a>
+        <a href="#perfil" class="hover:text-slate-900">Perfil</a>
+        <a href="#stack" class="hover:text-slate-900">Stack</a>
+        <a href="#educacion" class="hover:text-slate-900">Educación</a>
+        <a href="#proyectos" class="hover:text-slate-900">Proyectos</a>
+        <a href="#experiencia" class="hover:text-slate-900">Experiencia</a>
+        <a href="#contacto" class="rounded-xl border border-slate-300 px-3 py-2 text-slate-700 hover:border-slate-500 hover:text-slate-900">Contacto</a>
+      </nav>
+      <button id="mobile-menu-button" type="button" aria-label="Abrir menú" aria-expanded="false" class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white p-2 text-slate-700 hover:border-slate-500 hover:text-slate-900 md:hidden">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true">
+          <line x1="4" y1="6" x2="20" y2="6"></line>
+          <line x1="4" y1="12" x2="20" y2="12"></line>
+          <line x1="4" y1="18" x2="20" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu-overlay" class="fixed inset-0 z-40 hidden bg-slate-900/20 md:hidden"></div>
+    <div id="mobile-menu-panel" class="absolute inset-x-0 top-full z-50 hidden border-b border-slate-300/60 bg-slate-100/95 px-4 py-4 shadow-lg md:hidden">
+      <nav class="flex flex-col gap-2 text-sm font-semibold text-slate-700">
+        <a href="#hero" class="mobile-nav-link rounded-lg px-2 py-2 hover:bg-white hover:text-slate-900">Inicio</a>
+        <a href="#perfil" class="mobile-nav-link rounded-lg px-2 py-2 hover:bg-white hover:text-slate-900">Perfil</a>
+        <a href="#stack" class="mobile-nav-link rounded-lg px-2 py-2 hover:bg-white hover:text-slate-900">Stack</a>
+        <a href="#educacion" class="mobile-nav-link rounded-lg px-2 py-2 hover:bg-white hover:text-slate-900">Educación</a>
+        <a href="#proyectos" class="mobile-nav-link rounded-lg px-2 py-2 hover:bg-white hover:text-slate-900">Proyectos</a>
+        <a href="#experiencia" class="mobile-nav-link rounded-lg px-2 py-2 hover:bg-white hover:text-slate-900">Experiencia</a>
+        <a href="#contacto" class="mobile-nav-link rounded-lg px-2 py-2 hover:bg-white hover:text-slate-900">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="mx-auto w-[min(1120px,calc(100%-2rem))] py-12 md:py-16">
+    <section id="hero" class="mb-16 grid gap-8 md:mb-20 md:grid-cols-[1.1fr_.9fr]">
+      <div class="reveal" data-reveal data-delay="0">
+        <p class="mb-4 inline-flex items-center rounded-full border border-slate-300/80 bg-white/75 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-600">
+          C# · .NET · Clean Code mindset
+        </p>
+        <h1 class="mb-4 text-4xl font-bold leading-tight text-slate-900 md:text-6xl">Hola, soy Sergi García</h1>
+        <p class="mb-2 text-xl font-semibold text-slate-700 md:text-2xl">Backend Developer .NET Junior</p>
+        <p class="max-w-2xl text-base leading-7 text-slate-600 md:text-lg">
+          Escribo código C# / .NET pensando en quien lo lee después.
+          Años tomando decisiones bajo presión me han enseñado a priorizar, mantener criterio y no escribir código que no pueda explicar.
+        </p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href="#perfil" class="rounded-xl bg-[#0B2545] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#1e3a5f]">Ver perfil</a>
+          <a href="#proyectos" class="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:border-slate-500 hover:text-slate-900">Ver proyectos</a>
+          <a href="#contacto" class="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:border-slate-500 hover:text-slate-900">Contactar</a>
+          <a href="assets/cvSergi.pdf" download target="_blank"
+   class="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:border-slate-500 hover:text-slate-900 inline-flex items-center gap-2">
+  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+    <polyline points="7 10 12 15 17 10"/>
+    <line x1="12" y1="15" x2="12" y2="3"/>
+  </svg>
+  Descargar CV
+</a>
+        </div>
+        <div class="mt-4 flex items-center gap-3">
+          <a href="https://github.com/SergiByte92" target="_blank" rel="noreferrer" aria-label="GitHub" class="icon-link">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2C6.48 2 2 6.58 2 12.23c0 4.52 2.87 8.35 6.84 9.7.5.1.68-.22.68-.5v-1.74c-2.78.62-3.37-1.22-3.37-1.22-.46-1.2-1.11-1.53-1.11-1.53-.91-.64.07-.63.07-.63 1 .08 1.53 1.06 1.53 1.06.9 1.58 2.35 1.12 2.92.86.1-.67.35-1.12.64-1.37-2.22-.26-4.55-1.14-4.55-5.07 0-1.12.39-2.04 1.03-2.75-.1-.26-.45-1.3.1-2.72 0 0 .84-.27 2.75 1.05A9.36 9.36 0 0 1 12 6.84c.85 0 1.71.12 2.5.36 1.9-1.32 2.74-1.05 2.74-1.05.55 1.42.2 2.46.1 2.72.64.7 1.03 1.63 1.03 2.75 0 3.94-2.33 4.8-4.56 5.06.36.32.68.93.68 1.88v2.79c0 .28.18.61.69.5A10.25 10.25 0 0 0 22 12.23C22 6.58 17.52 2 12 2Z"></path>
+            </svg>
+          </a>
+          <a href="https://www.linkedin.com/in/sergi-garcia-53aa64212/" target="_blank" rel="noreferrer" aria-label="LinkedIn" class="icon-link">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M6.94 8.5A1.56 1.56 0 1 1 6.94 5.4a1.56 1.56 0 0 1 0 3.12ZM5.6 9.7h2.67V18H5.6V9.7Zm4.35 0h2.56v1.13h.04c.36-.67 1.23-1.38 2.53-1.38 2.71 0 3.21 1.84 3.21 4.23V18H15.6v-3.83c0-.91-.02-2.08-1.23-2.08-1.23 0-1.42.99-1.42 2.02V18H9.95V9.7Z"></path>
+            </svg>
+          </a>
+          <a href="mailto:sergigs92@gmail.com" target="_blank" rel="noreferrer" aria-label="Email" class="icon-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3.5 6.5h17a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-17a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z"></path>
+              <path d="m4 7 8 6 8-6"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <article class="section-card reveal rounded-3xl p-6 md:p-7" data-reveal data-delay="120">
+        <h2 class="mb-2 text-lg font-bold text-slate-900">Resumen técnico</h2>
+        <p class="mb-4 text-sm leading-6 text-slate-600">
+          Perfil con orientación a backend, diseño por capas y decisiones técnicas explicables.
+          Priorizo calidad de implementación y claridad operativa.
+        </p>
+        <div class="grid gap-3 text-sm">
+          <div class="rounded-2xl border border-slate-200 bg-white/80 p-3">
+            <p class="font-semibold text-slate-800">Foco actual</p>
+            <p class="text-slate-600">.NET, SQL, arquitectura mantenible</p>
+          </div>
+          <div class="rounded-2xl border border-slate-200 bg-white/80 p-3">
+            <p class="font-semibold text-slate-800">Objetivo</p>
+            <p class="text-slate-600">Primer rol backend con crecimiento técnico sostenido</p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section id="perfil" class="mb-16 md:mb-20">
+      <div class="mb-6 reveal" data-reveal data-delay="0">
+        <h2 class="text-2xl font-bold text-slate-900 md:text-3xl">Perfil profesional</h2>
+        <p class="mt-2 max-w-3xl text-slate-600">
+          Perfil técnico con base real en backend, datos y arquitectura por capas.
+          No priorizo volumen de repositorio sino proyectos con continuidad, decisiones explicadas y foco claro en mantenibilidad.
+        </p>
+      </div>
+      <div class="grid gap-4 md:grid-cols-2">
+        <article class="section-card reveal rounded-2xl p-5" data-reveal data-delay="0">
+          <h3 class="text-sm font-bold uppercase tracking-wide text-slate-500">Especialidad</h3>
+          <p class="mt-2 text-slate-800">C# / .NET y APIs</p>
+        </article>
+        <article class="section-card reveal rounded-2xl p-5" data-reveal data-delay="120">
+          <h3 class="text-sm font-bold uppercase tracking-wide text-slate-500">Datos</h3>
+          <p class="mt-2 text-slate-800">PostgreSQL y EF Core</p>
+        </article>
+        <article class="section-card reveal rounded-2xl p-5" data-reveal data-delay="120">
+          <h3 class="text-sm font-bold uppercase tracking-wide text-slate-500">Forma de trabajo</h3>
+          <p class="mt-2 text-slate-800">Orden, constancia y foco</p>
+        </article>
+        <article class="section-card reveal rounded-2xl p-5" data-reveal data-delay="240">
+          <h3 class="text-sm font-bold uppercase tracking-wide text-slate-500">Valor</h3>
+          <p class="mt-2 text-slate-800">Claridad y mantenibilidad</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="stack" class="mb-16 md:mb-20">
+      <div class="mb-6 reveal" data-reveal data-delay="0">
+        <h2 class="text-2xl font-bold text-slate-900 md:text-3xl">Stack técnico</h2>
+        <p class="mt-2 max-w-3xl text-slate-600">
+          Tecnologías agrupadas por bloques para lectura rápida del perfil y facilitar una lectura clara del stack.
+        </p>
+      </div>
+      <div class="grid gap-4">
+        <article class="stack-group reveal rounded-2xl p-5" data-reveal data-delay="0">
+          <h3 class="mb-3 text-sm font-bold uppercase tracking-wide text-slate-500">Lenguajes</h3>
+          <div class="tech-grid">
+            <div class="tech-card"><i class="devicon-csharp-plain tech-icon" aria-hidden="true"></i><span class="tech-name">C#</span></div>
+            <div class="tech-card"><i class="devicon-python-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Python</span></div>
+            <div class="tech-card"><i class="devicon-cplusplus-plain tech-icon" aria-hidden="true"></i><span class="tech-name">C++</span></div>
+            <div class="tech-card"><i class="devicon-azuresqldatabase-plain tech-icon" aria-hidden="true"></i><span class="tech-name">SQL</span></div>
+          </div>
+        </article>
+        <article class="stack-group reveal rounded-2xl p-5" data-reveal data-delay="120">
+          <h3 class="mb-3 text-sm font-bold uppercase tracking-wide text-slate-500">Backend y datos</h3>
+          <div class="tech-grid">
+            <div class="tech-card"><i class="devicon-dotnetcore-plain tech-icon" aria-hidden="true"></i><span class="tech-name">.NET</span></div>
+            <div class="tech-card"><i class="devicon-postgresql-plain tech-icon" aria-hidden="true"></i><span class="tech-name">PostgreSQL</span></div>
+            <div class="tech-card"><i class="devicon-mongodb-plain tech-icon" aria-hidden="true"></i><span class="tech-name">MongoDB</span></div>
+            <div class="tech-card"><span class="tech-icon-fallback" aria-hidden="true">API</span><span class="tech-name">REST APIs</span></div>
+            <div class="tech-card">
+              <span class="tech-icon-fallback" aria-hidden="true">EF</span>
+              <span class="tech-name">EF Core</span>
+            </div>
+            <div class="tech-card">
+              <span class="tech-icon-fallback" aria-hidden="true">WS</span>
+              <span class="tech-name">Sockets</span>
+            </div>
+          </div>
+        </article>
+        <article class="stack-group reveal rounded-2xl p-5" data-reveal data-delay="120">
+          <h3 class="mb-3 text-sm font-bold uppercase tracking-wide text-slate-500">Sistemas</h3>
+          <div class="tech-grid">
+            <div class="tech-card"><i class="devicon-linux-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Linux</span></div>
+            <div class="tech-card"><i class="devicon-docker-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Docker</span></div>
+            <div class="tech-card"><i class="devicon-windows11-original tech-icon" aria-hidden="true"></i><span class="tech-name">Windows Security</span></div>
+            <div class="tech-card">
+              <span class="tech-icon-fallback" aria-hidden="true">VM</span>
+              <span class="tech-name">Virtual Machines</span>
+            </div>
+          </div>
+        </article>
+        <article class="stack-group reveal rounded-2xl p-5" data-reveal data-delay="240">
+          <h3 class="mb-3 text-sm font-bold uppercase tracking-wide text-slate-500">Frontend básico</h3>
+          <div class="tech-grid">
+            <div class="tech-card"><i class="devicon-html5-plain tech-icon" aria-hidden="true"></i><span class="tech-name">HTML</span></div>
+            <div class="tech-card"><i class="devicon-css3-plain tech-icon" aria-hidden="true"></i><span class="tech-name">CSS</span></div>
+            <div class="tech-card"><i class="devicon-javascript-plain tech-icon" aria-hidden="true"></i><span class="tech-name">JavaScript</span></div>
+            <div class="tech-card"><i class="devicon-bootstrap-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Bootstrap</span></div>
+          </div>
+        </article>
+        <article class="stack-group reveal rounded-2xl p-5" data-reveal data-delay="240">
+          <h3 class="mb-3 text-sm font-bold uppercase tracking-wide text-slate-500">Tooling</h3>
+          <div class="tech-grid">
+            <div class="tech-card"><i class="devicon-nodejs-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Node.js</span></div>
+            <div class="tech-card"><i class="devicon-npm-original-wordmark tech-icon" aria-hidden="true"></i><span class="tech-name">npm</span></div>
+            <div class="tech-card"><i class="devicon-capacitor-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Capacitor</span></div>
+            <div class="tech-card">
+              <span class="tech-icon-fallback" aria-hidden="true">UI</span>
+              <span class="tech-name">shadcn/ui</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="educacion" class="mb-16 md:mb-20">
+      <div class="mb-6 reveal" data-reveal data-delay="0">
+        <h2 class="text-2xl font-bold text-slate-900 md:text-3xl">Educación</h2>
+      </div>
+      <div class="grid gap-4 md:grid-cols-2">
+        <article class="section-card reveal rounded-2xl p-5" data-reveal data-delay="0">
+          <h3 class="text-lg font-bold text-slate-900">Desarrollo de Aplicaciones Multiplataforma (DAM)</h3>
+          <p class="mt-1 text-sm text-slate-600">iFP - L'Hospitalet de Llobregat</p>
+          <p class="mt-3 text-sm text-slate-700">Formación en: C#, Java, SQL, POO y desarrollo de software.</p>
+        </article>
+        <article class="section-card reveal rounded-2xl p-5" data-reveal data-delay="120">
+          <h3 class="text-lg font-bold text-slate-900">Certificaciones</h3>
+          <ul class="mt-3 list-disc space-y-2 pl-5 text-sm text-slate-700">
+            <li>Python Essentials 1 - Cisco NetAcad (30h)</li>
+            <li>Fundamentos de Bases de Datos - Platzi (14h)</li>
+          </ul>
+        </article>
+        <article class="section-card reveal rounded-2xl p-5 md:col-span-2" data-reveal data-delay="240">
+          <h3 class="text-lg font-bold text-slate-900">Otros estudios</h3>
+          <p class="mt-2 text-sm text-slate-700">Grado Superior en Administración y Finanzas</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="proyectos" class="mb-16 md:mb-20">
+      <div class="mb-6 reveal" data-reveal data-delay="0">
+        <h2 class="text-2xl font-bold text-slate-900 md:text-3xl">Proyectos</h2>
+        <p class="mt-2 max-w-3xl text-slate-600">Carrusel técnico con foco en proyectos reales, tecnologías clave y resumen rápido por tarjeta.</p>
+      </div>
+      <div class="projects-shell reveal card-soft" data-reveal data-delay="120">
+        <div class="projects-track" id="projects-track" aria-label="Carrusel de proyectos">
+          <article class="project-item">
+            <div class="project-flip">
+              <div class="project-face project-face--front">
+                <img class="project-cover" src="data/projects/chat-models-ui.png" alt="Interfaz del proyecto Chat automatico entre modelos" onerror="this.onerror=null;this.src='data/projects/project-chat-models.svg';">
+                <div class="project-front-body">
+                  <h3 class="project-title">Chat automatico entre modelos</h3>
+                  <div class="project-badges">
+                    <span class="project-badge">Next.js</span>
+                    <span class="project-badge">React</span>
+                    <span class="project-badge">shadcn/ui</span>
+                  </div>
+                </div>
+              </div>
+              <div class="project-face project-face--back">
+                <div>
+                  <h4 class="project-back-title">Chat automatico entre modelos</h4>
+                  <p class="project-desc">Interfaz que alterna respuestas entre OpenAI y Llama/Ollama con turnos controlados y experiencia de chat consistente.</p>
+                </div>
+                <div class="project-links">
+                  <a class="project-link" href="#" style="pointer-events:none;opacity:.5;">Ver en GitHub (próximamente)</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-item">
+            <div class="project-flip">
+              <div class="project-face project-face--front">
+                <img class="project-cover" src="data/projects/project-app-profesional.svg" alt="Portada del proyecto App Profesional">
+                <div class="project-front-body">
+                  <h3 class="project-title">App Profesional</h3>
+                  <div class="project-badges">
+                    <span class="project-badge">Next.js</span>
+                    <span class="project-badge">TypeScript</span>
+                    <span class="project-badge">Capacitor</span>
+                  </div>
+                </div>
+              </div>
+              <div class="project-face project-face--back">
+                <div>
+                  <h4 class="project-back-title">App Profesional</h4>
+                  <p class="project-desc">Aplicación con informes operativos, filtros y KPIs que reutiliza la base web para despliegue Android.</p>
+                </div>
+                <div class="project-links">
+                  <a class="project-link" href="#" style="pointer-events:none;opacity:.5;">Ver en GitHub (próximamente)</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-item">
+            <div class="project-flip">
+              <div class="project-face project-face--front">
+                <img class="project-cover" src="data/projects/project-mobileroute.svg" alt="Portada del proyecto MobileRoute">
+                <div class="project-front-body">
+                  <h3 class="project-title">MobileRoute Control Center</h3>
+                  <div class="project-badges">
+                    <span class="project-badge">C#</span>
+                    <span class="project-badge">.NET 8 WPF</span>
+                    <span class="project-badge">MongoDB</span>
+                  </div>
+                </div>
+              </div>
+              <div class="project-face project-face--back">
+                <div>
+                  <h4 class="project-back-title">MobileRoute Control Center</h4>
+                  <p class="project-desc">Centro de control de rutas con visualización de mapas y gestión de datos operativos en entorno de escritorio.</p>
+                </div>
+                <div class="project-links">
+                  <a class="project-link" href="#" style="pointer-events:none;opacity:.5;">Ver en GitHub (próximamente)</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-item">
+            <div class="project-flip">
+              <div class="project-face project-face--front">
+                <img class="project-cover" src="data/projects/project-controlcenter-orm.svg" alt="Portada del proyecto ControlCenterORM">
+                <div class="project-front-body">
+                  <h3 class="project-title">ControlCenterORM</h3>
+                  <div class="project-badges">
+                    <span class="project-badge">C#</span>
+                    <span class="project-badge">EF Core</span>
+                    <span class="project-badge">PostgreSQL</span>
+                  </div>
+                </div>
+              </div>
+              <div class="project-face project-face--back">
+                <div>
+                  <h4 class="project-back-title">ControlCenterORM</h4>
+                  <p class="project-desc">Capa de persistencia relacional para información geográfica con entidades y contexto orientados a mantenibilidad.</p>
+                </div>
+                <div class="project-links">
+                  <a class="project-link" href="#" style="pointer-events:none;opacity:.5;">Ver en GitHub (próximamente)</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-item">
+            <div class="project-flip">
+              <div class="project-face project-face--front">
+                <img class="project-cover" src="data/projects/project-projectvault.svg" alt="Portada del proyecto ProjectVault">
+                <div class="project-front-body">
+                  <h3 class="project-title">ProjectVault</h3>
+                  <div class="project-badges">
+                    <span class="project-badge">C#</span>
+                    <span class="project-badge">.NET 8</span>
+                    <span class="project-badge">Sockets</span>
+                  </div>
+                </div>
+              </div>
+              <div class="project-face project-face--back">
+                <div>
+                  <h4 class="project-back-title">ProjectVault</h4>
+                  <p class="project-desc">Arquitectura cliente-servidor con módulos de red separados para intercambio de datos y gestión de conexiones.</p>
+                </div>
+                <div class="project-links">
+                  <a class="project-link" href="#" style="pointer-events:none;opacity:.5;">Ver en GitHub (próximamente)</a>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="experiencia" class="mb-16 md:mb-20">
+      <div class="mb-6 reveal" data-reveal data-delay="0">
+        <h2 class="text-2xl font-bold text-slate-900 md:text-3xl">Experiencia profesional</h2>
+        <p class="mt-2 text-sm font-semibold text-slate-700">Empresa: Prosegur</p>
+        <p class="text-sm text-slate-600">Periodo: Junio 2019 - Actualidad</p>
+        <p class="mt-3 max-w-3xl text-slate-600">
+          Compagino mis estudios de Desarrollo de Aplicaciones Multiplataforma con mi actividad profesional en Prosegur desde 2019, lo que me ha permitido desarrollar organización, responsabilidad y capacidad de aprendizaje continuo.
+        </p>
+      </div>
+      <div class="grid gap-4 md:grid-cols-2">
+        <article class="section-card reveal rounded-2xl p-5" data-reveal data-delay="0">
+          <h3 class="text-base font-bold text-slate-900">Operario / Responsable de actividad</h3>
+          <p class="mt-1 text-sm text-slate-600">Prosegur</p>
+          <p class="text-sm text-slate-600">Junio 2019 - Actualidad</p>
+          <p class="mt-3 text-sm leading-6 text-slate-700">
+            Participación en operaciones de transporte de valores y gestión de actividad operativa.
+            En determinadas rotaciones he asumido responsabilidad sobre la coordinación de la actividad y apoyo en la incorporación de nuevos compañeros.
+          </p>
+        </article>
+        <article class="section-card reveal rounded-2xl p-5" data-reveal data-delay="120">
+          <h3 class="text-base font-bold text-slate-900">Auditor de oficinas bancarias</h3>
+          <p class="mt-1 text-sm text-slate-600">Prosegur</p>
+          <p class="text-sm text-slate-600">2019 - Actualidad</p>
+          <p class="mt-3 text-sm leading-6 text-slate-700">
+            Supervisión y auditoría operativa en sucursales bancarias.
+            Revisión de procedimientos, control de incidencias y verificación de cumplimiento de procesos.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="servicios" class="mb-16 md:mb-20">
+      <div class="mb-6 reveal" data-reveal data-delay="0">
+        <h2 class="text-2xl font-bold text-slate-900 md:text-3xl">Servicios</h2>
+      </div>
+      <div class="grid gap-4 md:grid-cols-3">
+        <article class="section-card reveal card-soft rounded-2xl p-5" data-reveal data-delay="0">
+          <h3 class="text-base font-bold text-slate-900">Backend Development</h3>
+          <p class="mt-2 text-sm text-slate-600">Diseño de APIs, lógica de negocio y arquitectura backend.</p>
+        </article>
+        <article class="section-card reveal card-soft rounded-2xl p-5" data-reveal data-delay="120">
+          <h3 class="text-base font-bold text-slate-900">Desktop Applications</h3>
+          <p class="mt-2 text-sm text-slate-600">Aplicaciones de escritorio con .NET.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contacto" class="mb-4">
+      <div class="glass reveal rounded-3xl p-7 text-center md:p-10" data-reveal data-delay="0">
+        <h2 class="mb-4 text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">Trabajemos juntos</h2>
+        <p class="mx-auto mb-6 max-w-xl text-slate-600">Si te interesa mi perfil backend junior, estaré encantado de conversar.</p>
+        <p class="mb-3 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold text-emerald-700">
+          <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          Disponible para incorporación
+        </p>
+        <div class="contact-icons flex items-center justify-center">
+          <a href="https://github.com/SergiByte92" target="_blank" rel="noreferrer" aria-label="GitHub" class="icon-link">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2C6.48 2 2 6.58 2 12.23c0 4.52 2.87 8.35 6.84 9.7.5.1.68-.22.68-.5v-1.74c-2.78.62-3.37-1.22-3.37-1.22-.46-1.2-1.11-1.53-1.11-1.53-.91-.64.07-.63.07-.63 1 .08 1.53 1.06 1.53 1.06.9 1.58 2.35 1.12 2.92.86.1-.67.35-1.12.64-1.37-2.22-.26-4.55-1.14-4.55-5.07 0-1.12.39-2.04 1.03-2.75-.1-.26-.45-1.3.1-2.72 0 0 .84-.27 2.75 1.05A9.36 9.36 0 0 1 12 6.84c.85 0 1.71.12 2.5.36 1.9-1.32 2.74-1.05 2.74-1.05.55 1.42.2 2.46.1 2.72.64.7 1.03 1.63 1.03 2.75 0 3.94-2.33 4.8-4.56 5.06.36.32.68.93.68 1.88v2.79c0 .28.18.61.69.5A10.25 10.25 0 0 0 22 12.23C22 6.58 17.52 2 12 2Z"></path>
+            </svg>
+          </a>
+          <a href="https://www.linkedin.com/in/sergi-garcia-53aa64212/" target="_blank" rel="noreferrer" aria-label="LinkedIn" class="icon-link">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M6.94 8.5A1.56 1.56 0 1 1 6.94 5.4a1.56 1.56 0 0 1 0 3.12ZM5.6 9.7h2.67V18H5.6V9.7Zm4.35 0h2.56v1.13h.04c.36-.67 1.23-1.38 2.53-1.38 2.71 0 3.21 1.84 3.21 4.23V18H15.6v-3.83c0-.91-.02-2.08-1.23-2.08-1.23 0-1.42.99-1.42 2.02V18H9.95V9.7Z"></path>
+            </svg>
+          </a>
+          <a href="mailto:sergigs92@gmail.com" target="_blank" rel="noreferrer" aria-label="Email" class="icon-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3.5 6.5h17a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-17a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z"></path>
+              <path d="m4 7 8 6 8-6"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      initIntersectionReveal();
+      const network = initNetworkBackground(prefersReducedMotion);
+      initSectionNetworkReactions(network);
+      initProjectsCarousel(prefersReducedMotion);
+
+      // Reveal de secciones: ejecuta una sola vez al entrar en viewport.
+      function initIntersectionReveal() {
+        const items = document.querySelectorAll("[data-reveal]");
+        const revealObserver = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) {
+              continue;
+            }
+
+            const delay = Number(entry.target.getAttribute("data-delay") || 0);
+            entry.target.style.transitionDelay = `${delay}ms`;
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+          }
+        }, {
+          threshold: 0.2,
+          rootMargin: "0px 0px -10% 0px"
+        });
+
+        for (const item of items) {
+          item.classList.add("reveal");
+          revealObserver.observe(item);
+        }
+      }
+
+      // Fondo de nodos: movimiento organico y conexiones por distancia real.
+      function initNetworkBackground(reducedMotion) {
+        const canvas = document.getElementById("network-bg");
+        const ctx = canvas.getContext("2d", { alpha: true });
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const baseNodes = window.innerWidth < 768 ? 34 : 58;
+        const interactionRadius = 120;
+        const interactionRadiusSq = interactionRadius * interactionRadius;
+        const mouse = { x: null, y: null };
+        const hasCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
+        const isTouchDevice = hasCoarsePointer || navigator.maxTouchPoints > 0;
+
+        const state = {
+          width: 0,
+          height: 0,
+          nodes: [],
+          reducedMotion,
+          mode: "hero",
+          modeTransition: null,
+          modeConfig: {
+            speed: 1.08,
+            threshold: 132,
+            glowBoost: 0.16,
+            drift: 0.015
+          }
+        };
+
+        function lerp(start, end, amount) {
+          return start + (end - start) * amount;
+        }
+
+        const modeMap = {
+          hero: { speed: 1.08, threshold: 132, glowBoost: 0.16, drift: 0.015 },
+          perfil: { speed: 1.02, threshold: 128, glowBoost: 0.18, drift: 0.012 },
+          stack: { speed: 1.1, threshold: 138, glowBoost: 0.3, drift: 0.014 },
+          educacion: { speed: 1.1, threshold: 146, glowBoost: 0.22, drift: 0.017 },
+          proyectos: { speed: 1.16, threshold: 158, glowBoost: 0.24, drift: 0.02 },
+          experiencia: { speed: 1.08, threshold: 146, glowBoost: 0.2, drift: 0.014 },
+          servicios: { speed: 1.0, threshold: 136, glowBoost: 0.19, drift: 0.012 },
+          contacto: { speed: 0.94, threshold: 124, glowBoost: 0.14, drift: 0.01 }
+        };
+
+        function resize() {
+          state.width = window.innerWidth;
+          state.height = window.innerHeight;
+
+          canvas.width = Math.floor(state.width * dpr);
+          canvas.height = Math.floor(state.height * dpr);
+          canvas.style.width = `${state.width}px`;
+          canvas.style.height = `${state.height}px`;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+          const targetCount = Math.max(16, Math.round(baseNodes * (state.reducedMotion ? 0.55 : 1)));
+          state.nodes = createNodes(targetCount);
+        }
+
+        // Crea nodos con velocidad base y radio para pintar puntos sobrios.
+        function createNodes(count) {
+          const nodes = [];
+          for (let i = 0; i < count; i += 1) {
+            const angle = Math.random() * Math.PI * 2;
+            const speed = 0.24 + Math.random() * 0.36;
+            const baseRadius = 1 + Math.random() * 1.8;
+            nodes.push({
+              x: Math.random() * state.width,
+              y: Math.random() * state.height,
+              vx: Math.cos(angle) * speed,
+              vy: Math.sin(angle) * speed,
+              radius: baseRadius,
+              baseRadius,
+              opacityBoost: 0,
+              proximity: 0,
+              seed: Math.random() * Math.PI * 2
+            });
+          }
+          return nodes;
+        }
+
+        // Interpola el modo actual para cambiar el fondo por seccion sin saltos.
+        function setMode(modeName) {
+          const nextMode = modeMap[modeName];
+          if (!nextMode || modeName === state.mode) {
+            return;
+          }
+
+          state.mode = modeName;
+          state.modeTransition = {
+            start: performance.now(),
+            duration: 620,
+            from: { ...state.modeConfig },
+            to: { ...nextMode }
+          };
+        }
+
+        // Aplica interpolacion suave entre configuraciones.
+        function updateMode() {
+          if (!state.modeTransition) {
+            return;
+          }
+
+          const now = performance.now();
+          const t = Math.min(1, (now - state.modeTransition.start) / state.modeTransition.duration);
+          const eased = 1 - Math.pow(1 - t, 3);
+          const { from, to } = state.modeTransition;
+
+          for (const key of Object.keys(to)) {
+            state.modeConfig[key] = from[key] + (to[key] - from[key]) * eased;
+          }
+
+          if (t >= 1) {
+            state.modeTransition = null;
+          }
+        }
+
+        // Actualiza posiciones con deriva organica y rebote en bordes.
+        function stepNodes() {
+          const cfg = state.modeConfig;
+          const speedFactor = state.reducedMotion ? 0.5 : cfg.speed;
+          const now = performance.now() * 0.001;
+          const canUseMouse = !isTouchDevice && mouse.x !== null && mouse.y !== null;
+
+          for (const node of state.nodes) {
+            const organicX = Math.sin(now + node.seed) * cfg.drift;
+            const organicY = Math.cos(now * 0.85 + node.seed) * cfg.drift;
+            node.vx += organicX;
+            node.vy += organicY;
+
+            let proximityTarget = 0;
+            if (canUseMouse) {
+              const dx = mouse.x - node.x;
+              const dy = mouse.y - node.y;
+              const distSq = dx * dx + dy * dy;
+
+              if (distSq < interactionRadiusSq) {
+                const dist = Math.sqrt(distSq);
+                proximityTarget = 1 - dist / interactionRadius;
+
+                // Atraccion muy suave hacia el cursor.
+                node.vx += dx * 0.00002 * proximityTarget;
+                node.vy += dy * 0.00002 * proximityTarget;
+
+                // Cerca del cursor, el nodo desacelera ligeramente.
+                const slowFactor = lerp(1, 0.92, proximityTarget);
+                node.vx = lerp(node.vx, node.vx * slowFactor, 0.18);
+                node.vy = lerp(node.vy, node.vy * slowFactor, 0.18);
+              }
+            }
+
+            node.vx *= 0.992;
+            node.vy *= 0.992;
+
+            node.x += node.vx * speedFactor;
+            node.y += node.vy * speedFactor;
+
+            if (node.x < 0 || node.x > state.width) {
+              node.vx *= -1;
+            }
+            if (node.y < 0 || node.y > state.height) {
+              node.vy *= -1;
+            }
+
+            node.x = Math.max(0, Math.min(state.width, node.x));
+            node.y = Math.max(0, Math.min(state.height, node.y));
+
+            // Interpolacion de realce visual para evitar saltos bruscos.
+            node.proximity = lerp(node.proximity, proximityTarget, 0.12);
+            node.radius = lerp(node.radius, node.baseRadius * (1 + node.proximity * 0.2), 0.14);
+            node.opacityBoost = lerp(node.opacityBoost, node.proximity * 0.18, 0.12);
+          }
+        }
+
+        // Dibuja lineas y nodos usando solo regla por distancia:
+        // distance < threshold -> linea con alpha proporcional.
+        function draw() {
+          ctx.clearRect(0, 0, state.width, state.height);
+
+          const cfg = state.modeConfig;
+          const threshold = cfg.threshold;
+          const thresholdSq = threshold * threshold;
+
+          for (let i = 0; i < state.nodes.length; i += 1) {
+            const a = state.nodes[i];
+
+            for (let j = i + 1; j < state.nodes.length; j += 1) {
+              const b = state.nodes[j];
+              const dx = a.x - b.x;
+              const dy = a.y - b.y;
+              const distSq = dx * dx + dy * dy;
+
+              if (distSq >= thresholdSq) {
+                continue;
+              }
+
+              const dist = Math.sqrt(distSq);
+              const baseAlpha = (1 - dist / threshold) * 0.3;
+              const proximityBoost = Math.max(a.proximity, b.proximity) * 0.15;
+              const alpha = Math.min(0.5, baseAlpha + proximityBoost);
+              ctx.strokeStyle = `rgba(30,58,95,${alpha.toFixed(3)})`;
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+
+          for (const node of state.nodes) {
+            const glowLevel = cfg.glowBoost;
+            const nodeAlpha = 0.35 + glowLevel * 0.55 + node.opacityBoost;
+            ctx.fillStyle = `rgba(11,37,69,${Math.min(0.9, nodeAlpha).toFixed(3)})`;
+            ctx.beginPath();
+            ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+            ctx.fill();
+
+            if (glowLevel > 0.2) {
+              ctx.strokeStyle = `rgba(59,130,246,${(glowLevel * 0.22).toFixed(3)})`;
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.arc(node.x, node.y, node.radius + 3.5 + glowLevel * 3, 0, Math.PI * 2);
+              ctx.stroke();
+            }
+          }
+        }
+
+        // Loop principal del canvas con requestAnimationFrame.
+        function animate() {
+          if (!document.hidden) {
+            updateMode();
+            stepNodes();
+            draw();
+          }
+          requestAnimationFrame(animate);
+        }
+
+        // Seguimiento de cursor desactivado en dispositivos tactiles.
+        if (!isTouchDevice) {
+          window.addEventListener("mousemove", (event) => {
+            mouse.x = event.clientX;
+            mouse.y = event.clientY;
+          });
+
+          window.addEventListener("mouseleave", () => {
+            mouse.x = null;
+            mouse.y = null;
+          });
+        }
+
+        window.addEventListener("resize", resize);
+        resize();
+
+        if (state.reducedMotion) {
+          draw();
+        } else {
+          animate();
+        }
+
+        return { setMode };
+      }
+
+      function initSectionNetworkReactions(network) {
+        const sections = document.querySelectorAll("main section[id]");
+        const observer = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) {
+              continue;
+            }
+            network.setMode(entry.target.id);
+          }
+        }, {
+          threshold: 0.2,
+          rootMargin: "-10% 0px -35% 0px"
+        });
+
+        for (const section of sections) {
+          observer.observe(section);
+        }
+      }
+
+      // Carrusel de proyectos infinito: anima el track interno con transform.
+      function initProjectsCarousel(reducedMotion) {
+        const track = document.getElementById("projects-track");
+        if (!track) {
+          return;
+        }
+
+        const originals = Array.from(track.children).filter((node) => node instanceof HTMLElement && node.dataset.clone !== "true");
+        if (!originals.length) {
+          return;
+        }
+
+        track.querySelectorAll('[data-clone="true"]').forEach((node) => node.remove());
+        const clones = originals.map((item) => {
+          const clone = item.cloneNode(true);
+          clone.dataset.clone = "true";
+          clone.setAttribute("aria-hidden", "true");
+          return clone;
+        });
+        track.append(...clones);
+
+        let loopWidth = 0;
+        let offsetX = 0;
+        let paused = false;
+        let lastTs = performance.now();
+        const pxPerSecond = reducedMotion ? 22 : 40;
+        const shell = track.closest(".projects-shell");
+
+        const measureLoop = () => {
+          const first = originals[0];
+          const last = originals[originals.length - 1];
+          if (!first || !last) {
+            return;
+          }
+
+          const styles = window.getComputedStyle(track);
+          const gap = parseFloat(styles.gap || "0") || 0;
+          loopWidth = (last.offsetLeft + last.offsetWidth) - first.offsetLeft + gap;
+          track.style.transform = `translate3d(${-offsetX}px, 0, 0)`;
+        };
+
+        const animate = (ts) => {
+          const delta = (ts - lastTs) / 1000;
+          lastTs = ts;
+
+          if (!paused && loopWidth > 0) {
+            offsetX += pxPerSecond * delta;
+            if (offsetX >= loopWidth) {
+              offsetX -= loopWidth;
+            }
+            track.style.transform = `translate3d(${-offsetX}px, 0, 0)`;
+          }
+
+          requestAnimationFrame(animate);
+        };
+
+        const pause = () => {
+          paused = true;
+        };
+        const resume = () => {
+          paused = false;
+        };
+
+        (shell || track).addEventListener("mouseenter", pause);
+        (shell || track).addEventListener("mouseleave", resume);
+        track.addEventListener("focusin", pause);
+        track.addEventListener("focusout", resume);
+
+        window.addEventListener("resize", measureLoop);
+        measureLoop();
+        requestAnimationFrame(animate);
+
+        document.addEventListener("visibilitychange", () => {
+          paused = document.hidden;
+          if (!document.hidden) {
+            lastTs = performance.now();
+          }
+        });
+      }
+    })();
+  </script>
+  <script>
+    (() => {
+      const button = document.getElementById("mobile-menu-button");
+      const panel = document.getElementById("mobile-menu-panel");
+      const overlay = document.getElementById("mobile-menu-overlay");
+      const links = document.querySelectorAll(".mobile-nav-link");
+
+      if (!button || !panel || !overlay) {
+        return;
+      }
+
+      const closeMenu = () => {
+        panel.classList.add("hidden");
+        overlay.classList.add("hidden");
+        button.setAttribute("aria-expanded", "false");
+      };
+
+      const openMenu = () => {
+        panel.classList.remove("hidden");
+        overlay.classList.remove("hidden");
+        button.setAttribute("aria-expanded", "true");
+      };
+
+      button.addEventListener("click", () => {
+        const isOpen = !panel.classList.contains("hidden");
+        if (isOpen) {
+          closeMenu();
+          return;
+        }
+        openMenu();
+      });
+
+      overlay.addEventListener("click", closeMenu);
+
+      for (const link of links) {
+        link.addEventListener("click", closeMenu);
+      }
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeMenu();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
+
+

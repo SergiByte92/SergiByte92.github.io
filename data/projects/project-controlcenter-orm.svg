@@ -1,0 +1,12 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="ControlCenterORM">
+  <rect width="1200" height="720" fill="#0b1220"/>
+  <rect x="110" y="110" width="980" height="500" rx="24" fill="#1e293b" stroke="#64748b" stroke-opacity="0.35"/>
+  <rect x="170" y="180" width="260" height="360" rx="16" fill="#253447"/>
+  <rect x="460" y="180" width="260" height="360" rx="16" fill="#253447"/>
+  <rect x="750" y="180" width="260" height="360" rx="16" fill="#253447"/>
+  <path d="M430 260h30M430 350h30M430 440h30M720 260h30M720 350h30M720 440h30" stroke="#93c5fd" stroke-width="6"/>
+  <g fill="#e2e8f0" font-family="IBM Plex Sans, Segoe UI, sans-serif">
+    <text x="170" y="160" font-size="28" font-weight="700">ControlCenterORM</text>
+    <text x="170" y="580" font-size="20">Modelo relacional y persistencia geográfica</text>
+  </g>
+</svg>

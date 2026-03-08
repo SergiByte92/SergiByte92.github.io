@@ -1,0 +1,12 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="ProjectVault">
+  <rect width="1200" height="720" fill="#111827"/>
+  <rect x="95" y="95" width="1010" height="530" rx="24" fill="#1f2937" stroke="#64748b" stroke-opacity="0.35"/>
+  <rect x="150" y="170" width="300" height="380" rx="16" fill="#263447"/>
+  <rect x="490" y="170" width="560" height="170" rx="16" fill="#263447"/>
+  <rect x="490" y="380" width="560" height="170" rx="16" fill="#263447"/>
+  <path d="M450 260h40M450 470h40" stroke="#93c5fd" stroke-width="7"/>
+  <g fill="#e2e8f0" font-family="IBM Plex Sans, Segoe UI, sans-serif">
+    <text x="170" y="220" font-size="28" font-weight="700">ProjectVault</text>
+    <text x="170" y="260" font-size="18">Client / Server Sockets</text>
+  </g>
+</svg>

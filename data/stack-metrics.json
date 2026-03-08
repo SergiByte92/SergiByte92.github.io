@@ -1,0 +1,50 @@
+{
+  "profile": "Sergi Garcia",
+  "scale": { "min": 0, "max": 10 },
+  "focus": [
+    { "label": "Backend (.NET/C#)", "value": 32 },
+    { "label": "Data (PostgreSQL/EF Core)", "value": 22 },
+    { "label": "Sistemas (VirtualBox/Linux/Windows)", "value": 14 },
+    { "label": "Python (scripts/algoritmos)", "value": 10 },
+    { "label": "Frontend basico (HTML/CSS/JS)", "value": 8 },
+    { "label": "DevOps basico (Docker/Git)", "value": 14 }
+  ],
+  "metrics": [
+    {
+      "id": "backend_dotnet",
+      "label": "Backend (.NET/C#)",
+      "score": 9,
+      "evidence": ["APIs REST", "DTOs", "Validacion", "Manejo de errores", "Clean Architecture"]
+    },
+    {
+      "id": "data_sql",
+      "label": "Data (PostgreSQL/EF Core)",
+      "score": 8,
+      "evidence": ["Modelado relacional", "FKs", "Indices", "Query shaping"]
+    },
+    {
+      "id": "systems",
+      "label": "Sistemas (VirtualBox/Linux/Windows)",
+      "score": 6,
+      "evidence": ["VirtualBox", "CLI", "Permisos", "Redes basicas"]
+    },
+    {
+      "id": "python",
+      "label": "Python (scripts/algoritmos)",
+      "score": 6,
+      "evidence": ["Automatizacion", "Utilidades", "Algoritmos academicos"]
+    },
+    {
+      "id": "frontend_basic",
+      "label": "Frontend basico (HTML/CSS/JS)",
+      "score": 5,
+      "evidence": ["Web estatica", "Interacciones simples"]
+    },
+    {
+      "id": "devops_basic",
+      "label": "DevOps basico (Docker/Git)",
+      "score": 6,
+      "evidence": ["Contenedores basicos", "Flujo Git", "Deploy en Vercel"]
+    }
+  ]
+}

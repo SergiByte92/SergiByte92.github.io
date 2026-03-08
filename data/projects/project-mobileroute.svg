@@ -1,0 +1,14 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="MobileRoute">
+  <rect width="1200" height="720" fill="#111827"/>
+  <rect x="80" y="80" width="1040" height="560" rx="24" fill="#1f2937" stroke="#64748b" stroke-opacity="0.35"/>
+  <rect x="120" y="130" width="330" height="470" rx="16" fill="#273548"/>
+  <rect x="470" y="130" width="610" height="470" rx="16" fill="#223041"/>
+  <path d="M520 220l120 60 90-50 100 80 130-70" fill="none" stroke="#93c5fd" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="520" cy="220" r="10" fill="#e2e8f0"/>
+  <circle cx="640" cy="280" r="10" fill="#e2e8f0"/>
+  <circle cx="730" cy="230" r="10" fill="#e2e8f0"/>
+  <g fill="#e2e8f0" font-family="IBM Plex Sans, Segoe UI, sans-serif">
+    <text x="140" y="180" font-size="28" font-weight="700">MobileRoute</text>
+    <text x="140" y="220" font-size="18">Control Center</text>
+  </g>
+</svg>

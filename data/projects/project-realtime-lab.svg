@@ -1,0 +1,20 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="Realtime sockets lab">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1324"/>
+      <stop offset="100%" stop-color="#1f2937"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="720" fill="url(#bg)"/>
+  <g stroke="#60a5fa" stroke-opacity="0.35" fill="none">
+    <circle cx="220" cy="210" r="58"/>
+    <circle cx="520" cy="160" r="58"/>
+    <circle cx="860" cy="230" r="58"/>
+    <circle cx="420" cy="470" r="58"/>
+    <circle cx="760" cy="500" r="58"/>
+    <path d="M278 206h184M578 168h224M462 442l58-224M804 476l56-188M470 505h232"/>
+  </g>
+  <g fill="#e2e8f0" font-family="IBM Plex Sans, Segoe UI, sans-serif">
+    <text x="120" y="620" font-size="30" font-weight="700">Realtime sockets lab</text>
+  </g>
+</svg>

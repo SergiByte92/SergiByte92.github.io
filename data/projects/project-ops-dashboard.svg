@@ -1,0 +1,15 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="Dashboard de operaciones">
+  <rect width="1200" height="720" fill="#111827"/>
+  <g fill="#1f2937" stroke="#475569" stroke-opacity="0.45">
+    <rect x="90" y="110" width="1020" height="500" rx="22"/>
+    <rect x="140" y="170" width="320" height="150" rx="14"/>
+    <rect x="490" y="170" width="270" height="150" rx="14"/>
+    <rect x="790" y="170" width="270" height="150" rx="14"/>
+    <rect x="140" y="350" width="920" height="210" rx="14"/>
+  </g>
+  <polyline points="180,520 320,460 430,490 560,400 720,430 870,350 1010,390" fill="none" stroke="#93c5fd" stroke-width="8" stroke-linecap="round"/>
+  <g fill="#e5e7eb" font-family="IBM Plex Sans, Segoe UI, sans-serif">
+    <text x="150" y="210" font-size="28" font-weight="700">Ops Dashboard</text>
+    <text x="150" y="255" font-size="18">Metricas en tiempo real</text>
+  </g>
+</svg>

@@ -1,0 +1,16 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="API de gestion de inventario">
+  <rect width="1200" height="720" fill="#0f172a"/>
+  <g fill="#1e293b" stroke="#64748b" stroke-opacity="0.35">
+    <rect x="110" y="130" width="980" height="460" rx="24"/>
+    <rect x="160" y="210" width="280" height="290" rx="14"/>
+    <rect x="470" y="210" width="250" height="130" rx="14"/>
+    <rect x="750" y="210" width="290" height="130" rx="14"/>
+    <rect x="470" y="370" width="570" height="130" rx="14"/>
+  </g>
+  <g fill="#e2e8f0" font-family="IBM Plex Sans, Segoe UI, sans-serif">
+    <text x="170" y="190" font-size="28" font-weight="700">Inventory API</text>
+    <text x="170" y="270" font-size="22">Stock</text>
+    <text x="170" y="320" font-size="22">Entradas / Salidas</text>
+    <text x="170" y="370" font-size="22">Alertas</text>
+  </g>
+</svg>
