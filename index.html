@@ -261,6 +261,38 @@ gtag('config', 'G-QZYHHQ02M0');
       text-transform: uppercase;
     }
 
+    .avatar-placeholder {
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      object-fit: cover;
+      filter: saturate(0.8) contrast(1.06) brightness(0.98);
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12);
+      flex: 0 0 112px;
+    }
+
+    .avatar-badge-wrap {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .open-to-work-badge {
+      display: block;
+      text-align: center;
+      margin-top: 6px;
+      border: 1px solid rgba(30, 58, 95, 0.22);
+      background: rgba(255, 255, 255, 0.78);
+      color: var(--accent);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      border-radius: 999px;
+      padding: 2px 10px;
+    }
+
     .projects-shell {
       position: relative;
       overflow: hidden;
@@ -389,6 +421,21 @@ gtag('config', 'G-QZYHHQ02M0');
 
     .project-face--front {
       transform: rotateY(0deg);
+      position: relative;
+    }
+
+    .project-face--front::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 140px;
+      background: linear-gradient(180deg, rgba(11, 37, 69, 0.06), rgba(11, 37, 69, 0.38));
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
+      z-index: 1;
     }
 
     .project-face--back {
@@ -411,6 +458,7 @@ gtag('config', 'G-QZYHHQ02M0');
       padding: 0.78rem 0.9rem 0.88rem;
       display: grid;
       gap: 0.5rem;
+      position: relative;
     }
 
     .project-title {
@@ -425,6 +473,15 @@ gtag('config', 'G-QZYHHQ02M0');
       display: flex;
       flex-wrap: wrap;
       gap: 0.45rem;
+      position: absolute;
+      left: 0.9rem;
+      right: 0.9rem;
+      top: -2.25rem;
+      z-index: 2;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      pointer-events: none;
     }
 
     .project-badge {
@@ -432,12 +489,23 @@ gtag('config', 'G-QZYHHQ02M0');
       align-items: center;
       padding: 0.17rem 0.42rem;
       border-radius: 999px;
-      border: 1px solid rgba(15, 23, 42, 0.16);
-      background: rgba(248, 250, 252, 0.95);
-      font-size: 0.62rem;
+      border: 1px solid rgba(248, 250, 252, 0.45);
+      background: rgba(11, 37, 69, 0.82);
+      font-size: 0.6rem;
       font-weight: 600;
-      color: #334155;
+      color: rgba(248, 250, 252, 0.96);
       letter-spacing: 0.02em;
+    }
+
+    .project-item:hover .project-face--front::after,
+    .project-item:focus-within .project-face--front::after {
+      opacity: 1;
+    }
+
+    .project-item:hover .project-badges,
+    .project-item:focus-within .project-badges {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .project-back-title {
@@ -581,11 +649,16 @@ gtag('config', 'G-QZYHHQ02M0');
         <p class="mb-4 inline-flex items-center rounded-full border border-slate-300/80 bg-white/75 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-600">
           C# · .NET · Clean Code mindset
         </p>
-        <h1 class="mb-4 text-4xl font-bold leading-tight text-slate-900 md:text-6xl">Hola, soy Sergi García</h1>
+        <div class="mb-4 flex items-center gap-4">
+          <div class="avatar-badge-wrap">
+            <img class="avatar-placeholder" src="assets/fotoperfil.jpg" alt="Foto de perfil de Sergi García">
+            <span class="open-to-work-badge">#OPENTOWORK</span>
+          </div>
+          <h1 class="text-4xl font-bold leading-tight text-slate-900 md:text-6xl">Hola, soy Sergi García</h1>
+        </div>
         <p class="mb-2 text-xl font-semibold text-slate-700 md:text-2xl">Backend Developer .NET Junior</p>
         <p class="max-w-2xl text-base leading-7 text-slate-600 md:text-lg">
-          Escribo código C# / .NET pensando en quien lo lee después.
-          Años tomando decisiones bajo presión me han enseñado que el orden es muy importante haciendo que busque tener una filosofia de "Clean Code".
+          Escribo código C# / .NET pensando en quien lo lee después. He visto de primera mano que cuando aparecen los errores, la diferencia entre resolverlos en minutos o en horas es el orden que había antes.
         </p>
         <div class="mt-7 flex flex-wrap gap-3">
           <a href="#perfil" class="rounded-xl bg-[#0B2545] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#1e3a5f]">Ver perfil</a>
@@ -659,11 +732,11 @@ gtag('config', 'G-QZYHHQ02M0');
         </article>
         <article class="section-card reveal rounded-2xl p-5" data-reveal data-delay="120">
           <h3 class="text-sm font-bold uppercase tracking-wide text-slate-500">Forma de trabajo</h3>
-          <p class="mt-2 text-slate-800">Orden, constancia y foco</p>
+          <p class="mt-2 text-slate-800">Cada variable hace lo que su nombre dice. El código que no necesita comentarios es el código que funciona.</p>
         </article>
         <article class="section-card reveal rounded-2xl p-5" data-reveal data-delay="240">
           <h3 class="text-sm font-bold uppercase tracking-wide text-slate-500">Valor</h3>
-          <p class="mt-2 text-slate-800">Claridad y mantenibilidad</p>
+          <p class="mt-2 text-slate-800">Menos energía mental en entender el código, más energía en resolver el problema.</p>
         </article>
       </div>
     </section>
@@ -679,46 +752,46 @@ gtag('config', 'G-QZYHHQ02M0');
         <article class="stack-group reveal rounded-2xl p-4" data-reveal data-delay="0">
           <h3 class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Lenguajes</h3>
           <div class="tech-grid">
-            <div class="tech-card tech-card--focus"><i class="devicon-csharp-plain tech-icon" aria-hidden="true"></i><span class="tech-name">C#</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span></span></div>
-            <div class="tech-card"><i class="devicon-python-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Python</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
+            <div class="tech-card tech-card--focus"><i class="devicon-csharp-plain tech-icon" aria-hidden="true"></i><span class="tech-name">C#</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
+            <div class="tech-card"><i class="devicon-python-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Python</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
             <div class="tech-card"><i class="devicon-cplusplus-plain tech-icon" aria-hidden="true"></i><span class="tech-name">C++</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
           </div>
         </article>
         <article class="stack-group reveal rounded-2xl p-4" data-reveal data-delay="120">
           <h3 class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Backend y datos</h3>
           <div class="tech-grid">
-            <div class="tech-card"><i class="devicon-dotnetcore-plain tech-icon" aria-hidden="true"></i><span class="tech-name">.NET</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
-            <div class="tech-card"><i class="devicon-postgresql-plain tech-icon" aria-hidden="true"></i><span class="tech-name">PostgreSQL</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
-            <div class="tech-card"><i class="devicon-mongodb-plain tech-icon" aria-hidden="true"></i><span class="tech-name">MongoDB</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
-            <div class="tech-card"><span class="tech-icon-fallback" aria-hidden="true">API</span><span class="tech-name">REST APIs</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
-            <div class="tech-card"><span class="tech-icon-fallback" aria-hidden="true">EF</span><span class="tech-name">EF Core</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
-            <div class="tech-card"><span class="tech-icon-fallback" aria-hidden="true">WS</span><span class="tech-name">Sockets</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
+            <div class="tech-card"><i class="devicon-dotnetcore-plain tech-icon" aria-hidden="true"></i><span class="tech-name">.NET</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
+            <div class="tech-card"><i class="devicon-postgresql-plain tech-icon" aria-hidden="true"></i><span class="tech-name">PostgreSQL</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
+            <div class="tech-card"><i class="devicon-mongodb-plain tech-icon" aria-hidden="true"></i><span class="tech-name">MongoDB</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
+            <div class="tech-card"><span class="tech-icon-fallback" aria-hidden="true">API</span><span class="tech-name">REST APIs</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
+            <div class="tech-card"><span class="tech-icon-fallback" aria-hidden="true">EF</span><span class="tech-name">EF Core</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
+            <div class="tech-card"><span class="tech-icon-fallback" aria-hidden="true">WS</span><span class="tech-name">Sockets</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
           </div>
         </article>
         <article class="stack-group reveal rounded-2xl p-4" data-reveal data-delay="120">
           <h3 class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Sistemas</h3>
           <div class="tech-grid">
-            <div class="tech-card"><i class="devicon-linux-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Linux</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
-            <div class="tech-card"><i class="devicon-docker-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Docker</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
-            <div class="tech-card"><i class="devicon-windows11-original tech-icon" aria-hidden="true"></i><span class="tech-name">Windows Security</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
-            <div class="tech-card"><span class="tech-icon-fallback" aria-hidden="true">VM</span><span class="tech-name">Virtual Machines</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
+            <div class="tech-card"><i class="devicon-linux-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Linux</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
+            <div class="tech-card"><i class="devicon-docker-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Docker</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
+            <div class="tech-card"><i class="devicon-windows11-original tech-icon" aria-hidden="true"></i><span class="tech-name">Windows Security</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
+            <div class="tech-card"><span class="tech-icon-fallback" aria-hidden="true">VM</span><span class="tech-name">Virtual Machines</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
           </div>
         </article>
         <article class="stack-group reveal rounded-2xl p-4" data-reveal data-delay="240">
           <h3 class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Frontend básico</h3>
           <div class="tech-grid">
-            <div class="tech-card"><i class="devicon-html5-plain tech-icon" aria-hidden="true"></i><span class="tech-name">HTML</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
-            <div class="tech-card"><i class="devicon-css3-plain tech-icon" aria-hidden="true"></i><span class="tech-name">CSS</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
-            <div class="tech-card"><i class="devicon-bootstrap-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Bootstrap</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
+            <div class="tech-card"><i class="devicon-html5-plain tech-icon" aria-hidden="true"></i><span class="tech-name">HTML</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
+            <div class="tech-card"><i class="devicon-css3-plain tech-icon" aria-hidden="true"></i><span class="tech-name">CSS</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
+            <div class="tech-card"><i class="devicon-bootstrap-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Bootstrap</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
           </div>
         </article>
         <article class="stack-group reveal rounded-2xl p-4" data-reveal data-delay="240">
           <h3 class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Tooling</h3>
           <div class="tech-grid">
-            <div class="tech-card"><i class="devicon-nodejs-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Node.js</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
-            <div class="tech-card"><i class="devicon-npm-original-wordmark tech-icon" aria-hidden="true"></i><span class="tech-name">npm</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
+            <div class="tech-card"><i class="devicon-nodejs-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Node.js</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
+            <div class="tech-card"><i class="devicon-npm-original-wordmark tech-icon" aria-hidden="true"></i><span class="tech-name">npm</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
             <div class="tech-card"><i class="devicon-capacitor-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Capacitor</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
-            <div class="tech-card"><span class="tech-icon-fallback" aria-hidden="true">UI</span><span class="tech-name">shadcn/ui</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
+            <div class="tech-card"><span class="tech-icon-fallback" aria-hidden="true">UI</span><span class="tech-name">shadcn/ui</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
           </div>
         </article>
       </div>
