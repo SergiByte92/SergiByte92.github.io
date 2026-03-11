@@ -173,57 +173,66 @@ gtag('config', 'G-QZYHHQ02M0');
     .stack-group {
       background: rgba(255, 255, 255, 0.9);
       border: 1px solid var(--line);
-      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.05);
     }
 
     .tech-grid {
       display: grid;
-      gap: 0.8rem;
-      grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+      gap: 0.4rem;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
     }
 
     .tech-card {
       display: grid;
-      place-items: center;
-      text-align: center;
-      gap: 0.4rem;
-      min-height: 108px;
-      border-radius: 1rem;
-      border: 1px solid rgba(30, 58, 95, 0.22);
+      justify-items: center;
+      gap: 0.16rem;
+      min-height: 74px;
+      padding: 0.2rem 0.25rem;
+      border-radius: 0.6rem;
+      border: 1px solid rgba(30, 58, 95, 0.18);
       background: rgba(248, 250, 252, 0.9);
       color: #1e293b;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .tech-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(30, 58, 95, 0.4);
-      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+      transform: translateY(-1px);
+      border-color: rgba(30, 58, 95, 0.32);
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.07);
     }
 
     .tech-icon {
-      font-size: 1.75rem;
+      font-size: 2rem;
       line-height: 1;
-      color: #0f172a;
+      color: #0b2545;
+      flex: 0 0 auto;
     }
 
     .tech-icon-fallback {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 1.9rem;
-      height: 1.9rem;
+      width: 2rem;
+      height: 2rem;
       border-radius: 999px;
       border: 1px solid rgba(15, 23, 42, 0.2);
-      font-size: 0.72rem;
+      font-size: 0.62rem;
       font-weight: 700;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.02em;
+      flex: 0 0 auto;
     }
 
     .tech-name {
-      font-size: 0.82rem;
+      font-size: 0.74rem;
       font-weight: 700;
-      color: #334155;
+      color: #1f2937;
+      text-align: center;
+    }
+
+    .tech-card--focus {
+      border-color: rgba(11, 37, 69, 0.42);
+      background: linear-gradient(180deg, rgba(11, 37, 69, 0.14), rgba(248, 250, 252, 0.95));
+      box-shadow: 0 8px 18px rgba(11, 37, 69, 0.11);
     }
 
     .tech-soon {
@@ -558,7 +567,7 @@ gtag('config', 'G-QZYHHQ02M0');
         <p class="mb-2 text-xl font-semibold text-slate-700 md:text-2xl">Backend Developer .NET Junior</p>
         <p class="max-w-2xl text-base leading-7 text-slate-600 md:text-lg">
           Escribo código C# / .NET pensando en quien lo lee después.
-          Años tomando decisiones bajo presión me han enseñado a priorizar, mantener criterio y no escribir código que no pueda explicar.
+          Años tomando decisiones bajo presión me han enseñado que el orden es muy importante haciendo que busque tener una filosofia de "Clean Code"
         </p>
         <div class="mt-7 flex flex-wrap gap-3">
           <a href="#perfil" class="rounded-xl bg-[#0B2545] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#1e3a5f]">Ver perfil</a>
@@ -618,7 +627,7 @@ gtag('config', 'G-QZYHHQ02M0');
         <h2 class="text-2xl font-bold text-slate-900 md:text-3xl">Perfil profesional</h2>
         <p class="mt-2 max-w-3xl text-slate-600">
           Perfil técnico con base real en backend, datos y arquitectura por capas.
-          No priorizo volumen de repositorio sino proyectos con continuidad, decisiones explicadas y foco claro en mantenibilidad.
+          Desde que leí Clean Code lo aplico en todo — si una variable no se llama por lo que hace, algo está mal.
         </p>
       </div>
       <div class="grid gap-4 md:grid-cols-2">
@@ -648,64 +657,48 @@ gtag('config', 'G-QZYHHQ02M0');
           Tecnologías agrupadas por bloques para lectura rápida del perfil y facilitar una lectura clara del stack.
         </p>
       </div>
-      <div class="grid gap-4">
-        <article class="stack-group reveal rounded-2xl p-5" data-reveal data-delay="0">
-          <h3 class="mb-3 text-sm font-bold uppercase tracking-wide text-slate-500">Lenguajes</h3>
+      <div class="grid gap-3 md:grid-cols-2">
+        <article class="stack-group reveal rounded-2xl p-4" data-reveal data-delay="0">
+          <h3 class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Lenguajes</h3>
           <div class="tech-grid">
-            <div class="tech-card"><i class="devicon-csharp-plain tech-icon" aria-hidden="true"></i><span class="tech-name">C#</span></div>
+            <div class="tech-card tech-card--focus"><i class="devicon-csharp-plain tech-icon" aria-hidden="true"></i><span class="tech-name">C#</span></div>
             <div class="tech-card"><i class="devicon-python-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Python</span></div>
             <div class="tech-card"><i class="devicon-cplusplus-plain tech-icon" aria-hidden="true"></i><span class="tech-name">C++</span></div>
-            <div class="tech-card"><i class="devicon-azuresqldatabase-plain tech-icon" aria-hidden="true"></i><span class="tech-name">SQL</span></div>
           </div>
         </article>
-        <article class="stack-group reveal rounded-2xl p-5" data-reveal data-delay="120">
-          <h3 class="mb-3 text-sm font-bold uppercase tracking-wide text-slate-500">Backend y datos</h3>
+        <article class="stack-group reveal rounded-2xl p-4" data-reveal data-delay="120">
+          <h3 class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Backend y datos</h3>
           <div class="tech-grid">
             <div class="tech-card"><i class="devicon-dotnetcore-plain tech-icon" aria-hidden="true"></i><span class="tech-name">.NET</span></div>
             <div class="tech-card"><i class="devicon-postgresql-plain tech-icon" aria-hidden="true"></i><span class="tech-name">PostgreSQL</span></div>
-            <div class="tech-card"><i class="devicon-mongodb-plain tech-icon" aria-hidden="true"></i><span class="tech-name">MongoDB</span></div>
             <div class="tech-card"><span class="tech-icon-fallback" aria-hidden="true">API</span><span class="tech-name">REST APIs</span></div>
-            <div class="tech-card">
-              <span class="tech-icon-fallback" aria-hidden="true">EF</span>
-              <span class="tech-name">EF Core</span>
-            </div>
-            <div class="tech-card">
-              <span class="tech-icon-fallback" aria-hidden="true">WS</span>
-              <span class="tech-name">Sockets</span>
-            </div>
+            <div class="tech-card"><span class="tech-icon-fallback" aria-hidden="true">EF</span><span class="tech-name">EF Core</span></div>
           </div>
         </article>
-        <article class="stack-group reveal rounded-2xl p-5" data-reveal data-delay="120">
-          <h3 class="mb-3 text-sm font-bold uppercase tracking-wide text-slate-500">Sistemas</h3>
+        <article class="stack-group reveal rounded-2xl p-4" data-reveal data-delay="120">
+          <h3 class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Sistemas</h3>
           <div class="tech-grid">
             <div class="tech-card"><i class="devicon-linux-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Linux</span></div>
             <div class="tech-card"><i class="devicon-docker-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Docker</span></div>
             <div class="tech-card"><i class="devicon-windows11-original tech-icon" aria-hidden="true"></i><span class="tech-name">Windows Security</span></div>
-            <div class="tech-card">
-              <span class="tech-icon-fallback" aria-hidden="true">VM</span>
-              <span class="tech-name">Virtual Machines</span>
-            </div>
+            <div class="tech-card"><span class="tech-icon-fallback" aria-hidden="true">VM</span><span class="tech-name">Virtual Machines</span></div>
           </div>
         </article>
-        <article class="stack-group reveal rounded-2xl p-5" data-reveal data-delay="240">
-          <h3 class="mb-3 text-sm font-bold uppercase tracking-wide text-slate-500">Frontend básico</h3>
+        <article class="stack-group reveal rounded-2xl p-4" data-reveal data-delay="240">
+          <h3 class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Frontend básico</h3>
           <div class="tech-grid">
             <div class="tech-card"><i class="devicon-html5-plain tech-icon" aria-hidden="true"></i><span class="tech-name">HTML</span></div>
             <div class="tech-card"><i class="devicon-css3-plain tech-icon" aria-hidden="true"></i><span class="tech-name">CSS</span></div>
-            <div class="tech-card"><i class="devicon-javascript-plain tech-icon" aria-hidden="true"></i><span class="tech-name">JavaScript</span></div>
             <div class="tech-card"><i class="devicon-bootstrap-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Bootstrap</span></div>
           </div>
         </article>
-        <article class="stack-group reveal rounded-2xl p-5" data-reveal data-delay="240">
-          <h3 class="mb-3 text-sm font-bold uppercase tracking-wide text-slate-500">Tooling</h3>
+        <article class="stack-group reveal rounded-2xl p-4" data-reveal data-delay="240">
+          <h3 class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Tooling</h3>
           <div class="tech-grid">
             <div class="tech-card"><i class="devicon-nodejs-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Node.js</span></div>
             <div class="tech-card"><i class="devicon-npm-original-wordmark tech-icon" aria-hidden="true"></i><span class="tech-name">npm</span></div>
             <div class="tech-card"><i class="devicon-capacitor-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Capacitor</span></div>
-            <div class="tech-card">
-              <span class="tech-icon-fallback" aria-hidden="true">UI</span>
-              <span class="tech-name">shadcn/ui</span>
-            </div>
+            <div class="tech-card"><span class="tech-icon-fallback" aria-hidden="true">UI</span><span class="tech-name">shadcn/ui</span></div>
           </div>
         </article>
       </div>
@@ -908,22 +901,6 @@ gtag('config', 'G-QZYHHQ02M0');
       </div>
     </section>
 
-    <section id="servicios" class="mb-16 md:mb-20">
-      <div class="mb-6 reveal" data-reveal data-delay="0">
-        <h2 class="text-2xl font-bold text-slate-900 md:text-3xl">Servicios</h2>
-      </div>
-      <div class="grid gap-4 md:grid-cols-3">
-        <article class="section-card reveal card-soft rounded-2xl p-5" data-reveal data-delay="0">
-          <h3 class="text-base font-bold text-slate-900">Backend Development</h3>
-          <p class="mt-2 text-sm text-slate-600">Diseño de APIs, lógica de negocio y arquitectura backend.</p>
-        </article>
-        <article class="section-card reveal card-soft rounded-2xl p-5" data-reveal data-delay="120">
-          <h3 class="text-base font-bold text-slate-900">Desktop Applications</h3>
-          <p class="mt-2 text-sm text-slate-600">Aplicaciones de escritorio con .NET.</p>
-        </article>
-      </div>
-    </section>
-
     <section id="contacto" class="mb-4">
       <div class="glass reveal rounded-3xl p-7 text-center md:p-10" data-reveal data-delay="0">
         <h2 class="mb-4 text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">Trabajemos juntos</h2>
@@ -1026,7 +1003,6 @@ gtag('config', 'G-QZYHHQ02M0');
           educacion: { speed: 1.1, threshold: 146, glowBoost: 0.22, drift: 0.017 },
           proyectos: { speed: 1.16, threshold: 158, glowBoost: 0.24, drift: 0.02 },
           experiencia: { speed: 1.08, threshold: 146, glowBoost: 0.2, drift: 0.014 },
-          servicios: { speed: 1.0, threshold: 136, glowBoost: 0.19, drift: 0.012 },
           contacto: { speed: 0.94, threshold: 124, glowBoost: 0.14, drift: 0.01 }
         };
 
