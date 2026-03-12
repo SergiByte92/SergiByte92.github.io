@@ -3,11 +3,11 @@
 Portfolio web estatico orientado a presentar perfil Backend .NET Junior, stack tecnico y proyectos.
 
 ## Stack
-- HTML5
-- CSS3
-- JavaScript (vanilla)
-- Tailwind CSS (CDN)
-- Devicon (iconos de tecnologias)
+- C#
+- .NET
+- PostgreSQL
+- EF Core
+- APIs REST
 
 ## Estructura del proyecto
 ```txt
