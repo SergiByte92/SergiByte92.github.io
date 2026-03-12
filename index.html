@@ -248,9 +248,22 @@ gtag('config', 'G-QZYHHQ02M0');
     }
 
     .tech-card--focus {
-      border-color: rgba(11, 37, 69, 0.5);
-      background: linear-gradient(180deg, rgba(11, 37, 69, 0.16), rgba(248, 250, 252, 0.95));
-      box-shadow: 0 8px 18px rgba(11, 37, 69, 0.12);
+      border-color: transparent;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .tech-card--focus .tech-icon {
+      font-size: 2.3rem;
+      color: #1e40af;
+    }
+
+    .tech-card--focus .tech-name {
+      color: #1e40af;
+    }
+
+    .tech-card--focus .tech-dot.is-filled {
+      background: #1e40af;
     }
 
     .tech-soon {
@@ -265,10 +278,11 @@ gtag('config', 'G-QZYHHQ02M0');
       width: 112px;
       height: 112px;
       border-radius: 50%;
-      border: 2px solid var(--accent);
+      border: 2px solid rgba(30, 58, 95, 0.52);
+      background: #f8fafc;
       object-fit: cover;
-      filter: saturate(0.8) contrast(1.06) brightness(0.98);
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12);
+      filter: saturate(0.72) contrast(1.08) brightness(1.04);
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.14);
       flex: 0 0 112px;
     }
 
@@ -388,6 +402,7 @@ gtag('config', 'G-QZYHHQ02M0');
 
     .project-item {
       flex: 0 0 clamp(250px, 30vw, 330px);
+      height: 244px;
       min-height: 244px;
       perspective: 1300px;
     }
@@ -448,7 +463,9 @@ gtag('config', 'G-QZYHHQ02M0');
 
     .project-cover {
       width: 100%;
-      height: 140px;
+      height: auto;
+      min-height: 140px;
+      flex: 1 1 auto;
       object-fit: cover;
       display: block;
       border-bottom: 1px solid rgba(15, 23, 42, 0.12);
@@ -459,6 +476,7 @@ gtag('config', 'G-QZYHHQ02M0');
       display: grid;
       gap: 0.5rem;
       position: relative;
+      flex: 0 0 auto;
     }
 
     .project-title {
@@ -602,6 +620,7 @@ gtag('config', 'G-QZYHHQ02M0');
 
       .project-item {
         flex-basis: min(82vw, 300px);
+        height: auto;
       }
     }
   </style>
@@ -651,7 +670,7 @@ gtag('config', 'G-QZYHHQ02M0');
         </p>
         <div class="mb-4 flex items-center gap-4">
           <div class="avatar-badge-wrap">
-            <img class="avatar-placeholder" src="assets/fotoperfil.jpg" alt="Foto de perfil de Sergi García">
+            <img class="avatar-placeholder" src="assets/fotoPerfil.png" alt="Foto de perfil de Sergi García">
             <span class="open-to-work-badge">#OPENTOWORK</span>
           </div>
           <h1 class="text-4xl font-bold leading-tight text-slate-900 md:text-6xl">Hola, soy Sergi García</h1>
@@ -782,16 +801,7 @@ gtag('config', 'G-QZYHHQ02M0');
           <div class="tech-grid">
             <div class="tech-card"><i class="devicon-html5-plain tech-icon" aria-hidden="true"></i><span class="tech-name">HTML</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
             <div class="tech-card"><i class="devicon-css3-plain tech-icon" aria-hidden="true"></i><span class="tech-name">CSS</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
-            <div class="tech-card"><i class="devicon-bootstrap-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Bootstrap</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
-          </div>
-        </article>
-        <article class="stack-group reveal rounded-2xl p-4" data-reveal data-delay="240">
-          <h3 class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Tooling</h3>
-          <div class="tech-grid">
-            <div class="tech-card"><i class="devicon-nodejs-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Node.js</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
-            <div class="tech-card"><i class="devicon-npm-original-wordmark tech-icon" aria-hidden="true"></i><span class="tech-name">npm</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
-            <div class="tech-card"><i class="devicon-capacitor-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Capacitor</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
-            <div class="tech-card"><span class="tech-icon-fallback" aria-hidden="true">UI</span><span class="tech-name">shadcn/ui</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
+            <div class="tech-card"><i class="devicon-bootstrap-plain tech-icon" aria-hidden="true"></i><span class="tech-name">Bootstrap</span><span class="tech-level" aria-hidden="true"><span class="tech-dot is-filled"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span><span class="tech-dot"></span></span></div>
           </div>
         </article>
       </div>
@@ -978,17 +988,16 @@ gtag('config', 'G-QZYHHQ02M0');
       </div>
       <div class="grid gap-4 md:grid-cols-2">
         <article class="section-card reveal rounded-2xl p-5" data-reveal data-delay="0">
-          <h3 class="text-base font-bold text-slate-900">Operario / Responsable de actividad</h3>
+          <h3 class="text-base font-bold text-slate-900">Operario / Gestión de efectivo</h3>
           <p class="mt-3 text-sm leading-6 text-slate-700">
-            Participación en operaciones de transporte de valores y gestión de actividad operativa.
-            En determinadas rotaciones he asumido responsabilidad sobre la coordinación de la actividad y apoyo en la incorporación de nuevos compañeros.
+            Responsable del área de salida de efectivo: preparación, conteo y verificación de bultos.
+            Formación de nuevos compañeros en los modelos de cajeros y en la operativa de preparación.
           </p>
         </article>
         <article class="section-card reveal rounded-2xl p-5" data-reveal data-delay="120">
           <h3 class="text-base font-bold text-slate-900">Auditor de oficinas bancarias</h3>
           <p class="mt-3 text-sm leading-6 text-slate-700">
-            Supervisión y auditoría operativa en sucursales bancarias.
-            Revisión de procedimientos, control de incidencias y verificación de cumplimiento de procesos.
+            Auditorías puntuales en sucursales bancarias con control de efectivo y verificación del cumplimiento de procedimientos.
           </p>
         </article>
       </div>
