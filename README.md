@@ -1,61 +1,40 @@
-# Sergi Garcia Portfolio
+# Portfolio de Sergi Garcia
 
-Static portfolio prepared for Vercel and aligned with a backend-first GitHub strategy.
+Portfolio web estatico orientado a presentar perfil Backend .NET Junior, stack tecnico y proyectos.
 
-ES: Portfolio estatico enfocado en mostrar perfil backend real (.NET + Data + arquitectura limpia).
+## Stack
+- HTML5
+- CSS3
+- JavaScript (vanilla)
+- Tailwind CSS (CDN)
+- Devicon (iconos de tecnologias)
 
-EN: Static portfolio focused on a real backend profile (.NET + Data + clean architecture).
-
-## Live Scope
-- Home with direct value proposition
-- Four main project cards
-- Stack visualization (bars + Mermaid + JSON contract)
-- Engineering-focused "About"
-- Contact section
-
-## Run Local
-```bash
-python -m http.server 5500
-```
-Then open `http://localhost:5500`.
-
-## Deploy (Vercel)
-1. Keep `index.html`, `styles.css`, `app.js` at root.
-2. Import repository in Vercel.
-3. Framework preset: `Other`.
-4. Build command: empty.
-5. Output directory: root.
-
-## Repo Structure
+## Estructura del proyecto
 ```txt
 /
 |-- index.html
-|-- cv.html
 |-- styles.css
 |-- app.js
+|-- assets/
+|   |-- fotoPerfil.png
+|   |-- cvSergi.pdf
 |-- data/
 |   |-- stack-metrics.json
+|   |-- projects/
+|       |-- *.svg
 |-- docs/
 |   |-- github-migration-plan.md
 |   |-- repo-structure-standard.md
-|   |-- stack-graph.md
-|   |-- iterations-roadmap.md
-|   |-- templates/
-|       |-- README_MAIN_TEMPLATE.md
-|-- screens/
-|   |-- .gitkeep
-|-- .editorconfig
-|-- .gitignore
-|-- LICENSE
+|-- README.md
 ```
 
-## Migration Assets Included
-- GitHub migration playbook: [docs/github-migration-plan.md](docs/github-migration-plan.md)
-- Repo naming and structure policy: [docs/repo-structure-standard.md](docs/repo-structure-standard.md)
-- README template for main repositories: [docs/templates/README_MAIN_TEMPLATE.md](docs/templates/README_MAIN_TEMPLATE.md)
-- Stack graph payload and Mermaid snippet: [docs/stack-graph.md](docs/stack-graph.md)
-- Iteration plan: [docs/iterations-roadmap.md](docs/iterations-roadmap.md)
+## Accesibilidad y UX (resumen)
+- Navegacion responsive (desktop y menu movil)
+- Estados visuales en elementos interactivos
+- Carousel de proyectos con cara frontal/trasera
+- Soporte de `prefers-reduced-motion` en animaciones clave
 
-## Author
-Sergi Garcia - Barcelona  
-GitHub: https://github.com/SergiByte92
+## Autor
+- Sergi Garcia
+- GitHub: https://github.com/SergiByte92
+- LinkedIn: https://www.linkedin.com/in/sergi-garcia-53aa64212/
