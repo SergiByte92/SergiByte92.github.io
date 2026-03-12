@@ -1,532 +1,637 @@
-(() => {
-  const STACK_COLORS = ["#223041", "#334155", "#4d6074", "#66788e", "#8090a2", "#9aa8b7"];
-
-  const FALLBACK_STACK_DATA = {
-    profile: "Sergi Garcia",
-    scale: { min: 0, max: 10 },
-    focus: [
-      { label: "Backend (.NET/C#)", value: 32 },
-      { label: "Data (PostgreSQL/EF Core)", value: 22 },
-      { label: "Sistemas (VirtualBox/Linux/Windows)", value: 14 },
-      { label: "Python (scripts/algoritmos)", value: 10 },
-      { label: "Frontend basico (HTML/CSS/JS)", value: 8 },
-      { label: "DevOps basico (Docker/Git)", value: 14 }
-    ],
-    metrics: [
-      {
-        id: "backend_dotnet",
-        label: "Backend (.NET/C#)",
-        score: 9,
-        evidence: ["APIs REST", "DTOs", "Validacion", "Manejo de errores", "Clean Architecture"]
-      },
-      {
-        id: "data_sql",
-        label: "Data (PostgreSQL/EF Core)",
-        score: 8,
-        evidence: ["Modelado relacional", "FKs", "Indices", "Query shaping"]
-      },
-      {
-        id: "systems",
-        label: "Sistemas (VirtualBox/Linux/Windows)",
-        score: 6,
-        evidence: ["VirtualBox", "CLI", "Permisos", "Redes basicas"]
-      },
-      {
-        id: "python",
-        label: "Python (scripts/algoritmos)",
-        score: 6,
-        evidence: ["Automatizacion", "Utilidades", "Algoritmos academicos"]
-      },
-      {
-        id: "frontend_basic",
-        label: "Frontend basico (HTML/CSS/JS)",
-        score: 5,
-        evidence: ["Web estatica", "Interacciones simples"]
-      },
-      {
-        id: "devops_basic",
-        label: "DevOps basico (Docker/Git)",
-        score: 6,
-        evidence: ["Contenedores basicos", "Flujo Git", "Deploy en Vercel"]
-      }
-    ]
-  };
-
-  const yearNode = document.getElementById("year");
-  if (yearNode) {
-    yearNode.textContent = String(new Date().getFullYear());
-  }
-
-  loadStackData()
-    .then((data) => renderStackSection(data))
-    .catch(() => renderStackSection(FALLBACK_STACK_DATA));
-
-  initBackgroundNetwork();
-
-  async function loadStackData() {
-    try {
-      const response = await fetch("data/stack-metrics.json", { cache: "no-store" });
-      if (!response.ok) {
-        return FALLBACK_STACK_DATA;
-      }
-
-      const data = await response.json();
-      if (!data || !Array.isArray(data.metrics) || !Array.isArray(data.focus)) {
-        return FALLBACK_STACK_DATA;
-      }
-
-      return data;
-    } catch {
-      return FALLBACK_STACK_DATA;
-    }
-  }
-
-  function renderStackSection(data) {
-    const chartNode = document.getElementById("stack-chart");
-    const evidenceNode = document.getElementById("stack-evidence");
-
-    if (!chartNode || !evidenceNode) {
-      return;
-    }
-
-    chartNode.innerHTML = "";
-    evidenceNode.innerHTML = "";
-
-    chartNode.appendChild(createStackVisual(data.focus, data.profile));
-    evidenceNode.appendChild(createEvidenceIntro(data.scale));
-
-    for (const metric of data.metrics) {
-      evidenceNode.appendChild(createEvidenceCard(metric, data.scale));
-    }
-  }
-
-  function createStackVisual(focus, profile) {
-    const wrapper = document.createElement("div");
-    wrapper.className = "stack-visual";
-
-    const total = focus.reduce((sum, item) => sum + Math.max(0, item.value || 0), 0);
-    const segments = focus.map((item, index) => ({
-      ...item,
-      color: STACK_COLORS[index % STACK_COLORS.length],
-      share: formatShare(item.value, total),
-      ratio: total ? Math.max(0, item.value || 0) / total : 0
-    }));
-    const defaultIndex = getDominantSegmentIndex(segments);
-
-    const donutWrap = document.createElement("div");
-    donutWrap.className = "stack-donut-wrap";
-
-    const donut = document.createElement("div");
-    donut.className = "stack-donut";
-    donut.setAttribute("aria-label", buildFocusAriaLabel(focus, total));
-
-    const svgNs = "http://www.w3.org/2000/svg";
-    const svg = document.createElementNS(svgNs, "svg");
-    svg.classList.add("stack-donut__svg");
-    svg.setAttribute("viewBox", "0 0 240 240");
-
-    const track = document.createElementNS(svgNs, "circle");
-    track.classList.add("stack-donut__track");
-    track.setAttribute("cx", "120");
-    track.setAttribute("cy", "120");
-    track.setAttribute("r", "78");
-
-    const slicesGroup = document.createElementNS(svgNs, "g");
-    slicesGroup.classList.add("stack-donut__slices");
-    slicesGroup.setAttribute("transform", "rotate(-90 120 120)");
-
-    const sliceNodes = [];
-    const circumference = 2 * Math.PI * 78;
-    const segmentGap = segments.length > 1 ? 4 : 0;
-    let cursor = 0;
-
-    segments.forEach((segment, index) => {
-      const slice = document.createElementNS(svgNs, "circle");
-      slice.classList.add("stack-donut__slice");
-      slice.setAttribute("cx", "120");
-      slice.setAttribute("cy", "120");
-      slice.setAttribute("r", "78");
-      slice.setAttribute("tabindex", "0");
-      slice.setAttribute("role", "button");
-      slice.setAttribute("aria-label", `${segment.label}, ${segment.share}% del foco`);
-      slice.style.stroke = segment.color;
-
-      const rawLength = circumference * segment.ratio;
-      const visibleLength = Math.max(0, rawLength - segmentGap);
-      const centerAngle = -Math.PI / 2 + ((cursor + rawLength / 2) / circumference) * Math.PI * 2;
-
-      slice.setAttribute("stroke-dasharray", `${visibleLength.toFixed(2)} ${circumference.toFixed(2)}`);
-      slice.setAttribute("stroke-dashoffset", `${(-cursor).toFixed(2)}`);
-      slice.style.setProperty("--shift-x", `${(Math.cos(centerAngle) * 7).toFixed(2)}px`);
-      slice.style.setProperty("--shift-y", `${(Math.sin(centerAngle) * 7).toFixed(2)}px`);
-
-      slicesGroup.appendChild(slice);
-      sliceNodes.push(slice);
-      cursor += rawLength;
-
-      if (segment.ratio <= 0) {
-        slice.classList.add("is-empty");
-        slice.setAttribute("tabindex", "-1");
-        slice.removeAttribute("role");
-      }
-    });
-
-    svg.append(track, slicesGroup);
-
-    const center = document.createElement("div");
-    center.className = "stack-donut__center";
-
-    const eyebrow = document.createElement("span");
-    eyebrow.className = "stack-donut__eyebrow";
-    eyebrow.textContent = profile || "Stack";
-
-    const value = document.createElement("strong");
-    value.className = "stack-donut__value";
-    value.textContent = "0%";
-
-    const label = document.createElement("span");
-    label.className = "stack-donut__label";
-    label.textContent = "Sin datos";
-
-    const hint = document.createElement("span");
-    hint.className = "stack-donut__hint";
-    hint.textContent = "Pasa el raton por cada bloque";
-
-    center.append(eyebrow, value, label, hint);
-    donut.append(svg, center);
-    donutWrap.appendChild(donut);
-
-    const summary = document.createElement("div");
-    summary.className = "stack-summary";
-
-    const copy = document.createElement("p");
-    copy.className = "stack-summary__copy";
-    copy.textContent = buildFocusSummary(focus, total);
-
-    const legend = document.createElement("ul");
-    legend.className = "stack-legend";
-
-    const legendNodes = [];
-    segments.forEach((segment) => {
-      const item = createLegendItem(segment);
-      legendNodes.push(item);
-      legend.appendChild(item);
-    });
-
-    function applyActiveState(index) {
-      const segment = segments[index];
-
-      sliceNodes.forEach((node, nodeIndex) => {
-        node.classList.toggle("is-active", nodeIndex === index);
-        node.classList.toggle("is-dimmed", index !== -1 && nodeIndex !== index);
-      });
-
-      legendNodes.forEach((node, nodeIndex) => {
-        node.classList.toggle("is-active", nodeIndex === index);
-        node.classList.toggle("is-dimmed", index !== -1 && nodeIndex !== index);
-      });
-
-      if (!segment) {
-        value.textContent = "0%";
-        label.textContent = "Sin datos";
-        copy.textContent = "No hay datos suficientes para resumir el stack.";
-        return;
-      }
-
-      value.textContent = `${segment.share}%`;
-      label.textContent = simplifyLabel(segment.label);
-      copy.textContent = buildSegmentSummary(segment);
-    }
-
-    function resetActiveState() {
-      applyActiveState(defaultIndex);
-    }
-
-    function handleBlurReset() {
-      requestAnimationFrame(() => {
-        if (!wrapper.contains(document.activeElement)) {
-          resetActiveState();
-        }
-      });
-    }
-
-    sliceNodes.forEach((node, index) => {
-      node.addEventListener("mouseenter", () => applyActiveState(index));
-      node.addEventListener("focus", () => applyActiveState(index));
-      node.addEventListener("blur", handleBlurReset);
-    });
-
-    legendNodes.forEach((node, index) => {
-      node.addEventListener("mouseenter", () => applyActiveState(index));
-      node.addEventListener("focus", () => applyActiveState(index));
-      node.addEventListener("blur", handleBlurReset);
-    });
-
-    donutWrap.addEventListener("mouseleave", resetActiveState);
-    legend.addEventListener("mouseleave", resetActiveState);
-
-    resetActiveState();
-    summary.append(copy, legend);
-    wrapper.append(donutWrap, summary);
-    return wrapper;
-  }
-
-  function createEvidenceIntro(scale) {
-    const intro = document.createElement("div");
-    intro.className = "stack-evidence__introbox";
-
-    const title = document.createElement("h3");
-    title.className = "stack-evidence__title";
-    title.textContent = "Evidencia tecnica";
-
-    const text = document.createElement("p");
-    text.className = "stack-evidence__intro";
-    text.textContent = `Lectura rapida del nivel actual por bloque sobre ${scale.max}. No es humo: son senales concretas de cosas ya tocadas.`;
-
-    intro.append(title, text);
-    return intro;
-  }
-
-  function createLegendItem(item) {
-    const entry = document.createElement("li");
-    entry.className = "stack-legend__item";
-    entry.setAttribute("tabindex", "0");
-    entry.setAttribute("role", "button");
-    entry.setAttribute("aria-label", `${item.label}, ${item.share}% del foco`);
-
-    const dot = document.createElement("span");
-    dot.className = "stack-legend__dot";
-    dot.style.background = item.color;
-
-    const label = document.createElement("span");
-    label.className = "stack-legend__label";
-    label.textContent = item.label;
-
-    const value = document.createElement("span");
-    value.className = "stack-legend__value";
-    value.textContent = `${item.share}%`;
-
-    entry.append(dot, label, value);
-    return entry;
-  }
-
-  function createEvidenceCard(metric, scale) {
-    const card = document.createElement("article");
-    card.className = "evidence-card";
-
-    const head = document.createElement("div");
-    head.className = "evidence-card__head";
-
-    const title = document.createElement("h4");
-    title.textContent = metric.label;
-
-    const score = document.createElement("span");
-    score.className = "evidence-card__score";
-    score.textContent = `${metric.score}/${scale.max}`;
-
-    const list = document.createElement("ul");
-    list.className = "evidence-list";
-
-    for (const point of metric.evidence) {
-      const li = document.createElement("li");
-      li.textContent = point;
-      list.appendChild(li);
-    }
-
-    head.append(title, score);
-    card.append(head, list);
-    return card;
-  }
-
-  function buildFocusAriaLabel(focus, total) {
-    if (!focus.length || total <= 0) {
-      return "Grafico circular del stack sin datos";
-    }
-
-    const parts = focus.map((item) => `${item.label}: ${formatShare(item.value, total)} por ciento`);
-    return `Grafico circular del stack. ${parts.join(". ")}`;
-  }
-
-  function buildFocusSummary(focus, total) {
-    if (!focus.length || total <= 0) {
-      return "No hay datos suficientes para resumir el stack.";
-    }
-
-    const ordered = [...focus].sort((a, b) => b.value - a.value);
-    const primary = ordered[0];
-    const secondary = ordered[1];
-
-    if (!secondary) {
-      return `${simplifyLabel(primary.label)} concentra ${formatShare(primary.value, total)}% del foco actual.`;
-    }
-
-    return `${simplifyLabel(primary.label)} lleva el peso principal con ${formatShare(primary.value, total)}%, seguido de ${simplifyLabel(secondary.label)} con ${formatShare(secondary.value, total)}%.`;
-  }
-
-  function buildSegmentSummary(segment) {
-    if (!segment) {
-      return "No hay datos suficientes para resumir el stack.";
-    }
-
-    return `${simplifyLabel(segment.label)} representa ${segment.share}% del foco actual. Pasa por otro bloque para comparar prioridades.`;
-  }
-
-  function getDominantSegmentIndex(segments) {
-    return segments.reduce((bestIndex, segment, index, list) => {
-      if (bestIndex === -1 || segment.value > list[bestIndex].value) {
-        return index;
-      }
-
-      return bestIndex;
-    }, -1);
-  }
-
-  function formatShare(value, total) {
-    if (!total) {
-      return 0;
-    }
-
-    return Math.round((Math.max(0, value || 0) / total) * 100);
-  }
-
-  function simplifyLabel(label) {
-    return String(label || "").split("(")[0].trim() || "Bloque";
-  }
-
-  function initBackgroundNetwork() {
-    const canvas = document.getElementById("bg");
-    if (!canvas) return;
-
-    const context = canvas.getContext("2d", { alpha: true });
-    if (!context) return;
-
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    const state = {
-      w: 0,
-      h: 0,
-      nodes: [],
-      mouse: { x: null, y: null },
-      cfg: {
-        nodeCount: 44,
-        maxDist: 130,
-        speed: 0.16,
-        mouseInfluenceDist: 160
-      }
-    };
-
-    function resize() {
-      state.w = Math.floor(window.innerWidth);
-      state.h = Math.floor(window.innerHeight);
-      canvas.width = Math.floor(state.w * dpr);
-      canvas.height = Math.floor(state.h * dpr);
-      canvas.style.width = `${state.w}px`;
-      canvas.style.height = `${state.h}px`;
-      context.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-
-    function random(min, max) {
-      return min + Math.random() * (max - min);
-    }
-
-    function createNodes() {
-      const nodes = [];
-      for (let i = 0; i < state.cfg.nodeCount; i++) {
-        nodes.push({
-          x: random(0, state.w),
-          y: random(0, state.h),
-          vx: random(-1, 1) * state.cfg.speed,
-          vy: random(-1, 1) * state.cfg.speed,
-          r: random(1.2, 2.3)
+﻿(() => {
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      initIntersectionReveal();
+      const network = initNetworkBackground(prefersReducedMotion);
+      initSectionNetworkReactions(network);
+      initProjectsCarousel(prefersReducedMotion);
+
+      // Reveal de secciones: ejecuta una sola vez al entrar en viewport.
+      function initIntersectionReveal() {
+        const items = document.querySelectorAll("[data-reveal]");
+        const revealObserver = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) {
+              continue;
+            }
+
+            const delay = Number(entry.target.getAttribute("data-delay") || 0);
+            entry.target.style.transitionDelay = `${delay}ms`;
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+          }
+        }, {
+          threshold: 0.2,
+          rootMargin: "0px 0px -10% 0px"
         });
-      }
-      state.nodes = nodes;
-    }
 
-    function draw() {
-      context.clearRect(0, 0, state.w, state.h);
-
-      for (const node of state.nodes) {
-        node.x += node.vx;
-        node.y += node.vy;
-
-        if (node.x < 0 || node.x > state.w) node.vx *= -1;
-        if (node.y < 0 || node.y > state.h) node.vy *= -1;
-
-        node.x = Math.max(0, Math.min(state.w, node.x));
-        node.y = Math.max(0, Math.min(state.h, node.y));
-      }
-
-      for (let i = 0; i < state.nodes.length; i++) {
-        for (let j = i + 1; j < state.nodes.length; j++) {
-          const a = state.nodes[i];
-          const b = state.nodes[j];
-          const distance = Math.hypot(a.x - b.x, a.y - b.y);
-
-          if (distance > state.cfg.maxDist) continue;
-
-          const alpha = 1 - distance / state.cfg.maxDist;
-          context.strokeStyle = `rgba(51,65,85,${0.24 * alpha})`;
-          context.lineWidth = 1;
-          context.beginPath();
-          context.moveTo(a.x, a.y);
-          context.lineTo(b.x, b.y);
-          context.stroke();
+        for (const item of items) {
+          item.classList.add("reveal");
+          revealObserver.observe(item);
         }
       }
 
-      const mx = state.mouse.x;
-      const my = state.mouse.y;
+      // Fondo de nodos: movimiento organico y conexiones por distancia real.
+      function initNetworkBackground(reducedMotion) {
+        const canvas = document.getElementById("network-bg");
+        const ctx = canvas.getContext("2d", { alpha: true });
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const baseNodes = window.innerWidth < 768 ? 34 : 58;
+        const interactionRadius = 120;
+        const interactionRadiusSq = interactionRadius * interactionRadius;
+        const mouse = { x: null, y: null };
+        const hasCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
+        const isTouchDevice = hasCoarsePointer || navigator.maxTouchPoints > 0;
 
-      for (const node of state.nodes) {
-        let glow = 0;
-        if (mx != null && my != null) {
-          const distance = Math.hypot(node.x - mx, node.y - my);
-          if (distance < state.cfg.mouseInfluenceDist) {
-            glow = 1 - distance / state.cfg.mouseInfluenceDist;
+        const state = {
+          width: 0,
+          height: 0,
+          nodes: [],
+          reducedMotion,
+          mode: "hero",
+          modeTransition: null,
+          modeConfig: {
+            speed: 1.08,
+            threshold: 132,
+            glowBoost: 0.16,
+            drift: 0.015
+          }
+        };
+
+        function lerp(start, end, amount) {
+          return start + (end - start) * amount;
+        }
+
+        const modeMap = {
+          hero: { speed: 1.08, threshold: 132, glowBoost: 0.16, drift: 0.015 },
+          perfil: { speed: 1.02, threshold: 128, glowBoost: 0.18, drift: 0.012 },
+          stack: { speed: 1.1, threshold: 138, glowBoost: 0.3, drift: 0.014 },
+          educacion: { speed: 1.1, threshold: 146, glowBoost: 0.22, drift: 0.017 },
+          proyectos: { speed: 1.16, threshold: 158, glowBoost: 0.24, drift: 0.02 },
+          experiencia: { speed: 1.08, threshold: 146, glowBoost: 0.2, drift: 0.014 },
+          contacto: { speed: 0.94, threshold: 124, glowBoost: 0.14, drift: 0.01 }
+        };
+
+        function resize() {
+          state.width = window.innerWidth;
+          state.height = window.innerHeight;
+
+          canvas.width = Math.floor(state.width * dpr);
+          canvas.height = Math.floor(state.height * dpr);
+          canvas.style.width = `${state.width}px`;
+          canvas.style.height = `${state.height}px`;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+          const targetCount = Math.max(16, Math.round(baseNodes * (state.reducedMotion ? 0.55 : 1)));
+          state.nodes = createNodes(targetCount);
+        }
+
+        // Crea nodos con velocidad base y radio para pintar puntos sobrios.
+        function createNodes(count) {
+          const nodes = [];
+          for (let i = 0; i < count; i += 1) {
+            const angle = Math.random() * Math.PI * 2;
+            const speed = 0.24 + Math.random() * 0.36;
+            const baseRadius = 1 + Math.random() * 1.8;
+            nodes.push({
+              x: Math.random() * state.width,
+              y: Math.random() * state.height,
+              vx: Math.cos(angle) * speed,
+              vy: Math.sin(angle) * speed,
+              radius: baseRadius,
+              baseRadius,
+              opacityBoost: 0,
+              proximity: 0,
+              seed: Math.random() * Math.PI * 2
+            });
+          }
+          return nodes;
+        }
+
+        // Interpola el modo actual para cambiar el fondo por seccion sin saltos.
+        function setMode(modeName) {
+          const nextMode = modeMap[modeName];
+          if (!nextMode || modeName === state.mode) {
+            return;
+          }
+
+          state.mode = modeName;
+          state.modeTransition = {
+            start: performance.now(),
+            duration: 620,
+            from: { ...state.modeConfig },
+            to: { ...nextMode }
+          };
+        }
+
+        // Aplica interpolacion suave entre configuraciones.
+        function updateMode() {
+          if (!state.modeTransition) {
+            return;
+          }
+
+          const now = performance.now();
+          const t = Math.min(1, (now - state.modeTransition.start) / state.modeTransition.duration);
+          const eased = 1 - Math.pow(1 - t, 3);
+          const { from, to } = state.modeTransition;
+
+          for (const key of Object.keys(to)) {
+            state.modeConfig[key] = from[key] + (to[key] - from[key]) * eased;
+          }
+
+          if (t >= 1) {
+            state.modeTransition = null;
           }
         }
 
-        context.fillStyle = "rgba(30,41,59,0.48)";
-        context.beginPath();
-        context.arc(node.x, node.y, node.r, 0, Math.PI * 2);
-        context.fill();
+        // Actualiza posiciones con deriva organica y rebote en bordes.
+        function stepNodes() {
+          const cfg = state.modeConfig;
+          const speedFactor = state.reducedMotion ? 0.5 : cfg.speed;
+          const now = performance.now() * 0.001;
+          const canUseMouse = !isTouchDevice && mouse.x !== null && mouse.y !== null;
 
-        if (glow > 0) {
-          context.strokeStyle = `rgba(71,85,105,${0.33 * glow})`;
-          context.lineWidth = 1.8;
-          context.beginPath();
-          context.arc(node.x, node.y, node.r + 3 + 6 * glow, 0, Math.PI * 2);
-          context.stroke();
+          for (const node of state.nodes) {
+            const organicX = Math.sin(now + node.seed) * cfg.drift;
+            const organicY = Math.cos(now * 0.85 + node.seed) * cfg.drift;
+            node.vx += organicX;
+            node.vy += organicY;
+
+            let proximityTarget = 0;
+            if (canUseMouse) {
+              const dx = mouse.x - node.x;
+              const dy = mouse.y - node.y;
+              const distSq = dx * dx + dy * dy;
+
+              if (distSq < interactionRadiusSq) {
+                const dist = Math.sqrt(distSq);
+                proximityTarget = 1 - dist / interactionRadius;
+
+                // Atraccion muy suave hacia el cursor.
+                node.vx += dx * 0.00002 * proximityTarget;
+                node.vy += dy * 0.00002 * proximityTarget;
+
+                // Cerca del cursor, el nodo desacelera ligeramente.
+                const slowFactor = lerp(1, 0.92, proximityTarget);
+                node.vx = lerp(node.vx, node.vx * slowFactor, 0.18);
+                node.vy = lerp(node.vy, node.vy * slowFactor, 0.18);
+              }
+            }
+
+            node.vx *= 0.992;
+            node.vy *= 0.992;
+
+            node.x += node.vx * speedFactor;
+            node.y += node.vy * speedFactor;
+
+            if (node.x < 0 || node.x > state.width) {
+              node.vx *= -1;
+            }
+            if (node.y < 0 || node.y > state.height) {
+              node.vy *= -1;
+            }
+
+            node.x = Math.max(0, Math.min(state.width, node.x));
+            node.y = Math.max(0, Math.min(state.height, node.y));
+
+            // Interpolacion de realce visual para evitar saltos bruscos.
+            node.proximity = lerp(node.proximity, proximityTarget, 0.12);
+            node.radius = lerp(node.radius, node.baseRadius * (1 + node.proximity * 0.2), 0.14);
+            node.opacityBoost = lerp(node.opacityBoost, node.proximity * 0.18, 0.12);
+          }
+        }
+
+        // Dibuja lineas y nodos usando solo regla por distancia:
+        // distance < threshold -> linea con alpha proporcional.
+        function draw() {
+          ctx.clearRect(0, 0, state.width, state.height);
+
+          const cfg = state.modeConfig;
+          const threshold = cfg.threshold;
+          const thresholdSq = threshold * threshold;
+
+          for (let i = 0; i < state.nodes.length; i += 1) {
+            const a = state.nodes[i];
+
+            for (let j = i + 1; j < state.nodes.length; j += 1) {
+              const b = state.nodes[j];
+              const dx = a.x - b.x;
+              const dy = a.y - b.y;
+              const distSq = dx * dx + dy * dy;
+
+              if (distSq >= thresholdSq) {
+                continue;
+              }
+
+              const dist = Math.sqrt(distSq);
+              const baseAlpha = (1 - dist / threshold) * 0.3;
+              const proximityBoost = Math.max(a.proximity, b.proximity) * 0.15;
+              const alpha = Math.min(0.5, baseAlpha + proximityBoost);
+              ctx.strokeStyle = `rgba(30,58,95,${alpha.toFixed(3)})`;
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+
+          for (const node of state.nodes) {
+            const glowLevel = cfg.glowBoost;
+            const nodeAlpha = 0.35 + glowLevel * 0.55 + node.opacityBoost;
+            ctx.fillStyle = `rgba(11,37,69,${Math.min(0.9, nodeAlpha).toFixed(3)})`;
+            ctx.beginPath();
+            ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+            ctx.fill();
+
+            if (glowLevel > 0.2) {
+              ctx.strokeStyle = `rgba(59,130,246,${(glowLevel * 0.22).toFixed(3)})`;
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.arc(node.x, node.y, node.radius + 3.5 + glowLevel * 3, 0, Math.PI * 2);
+              ctx.stroke();
+            }
+          }
+        }
+
+        // Loop principal del canvas con requestAnimationFrame.
+        function animate() {
+          if (!document.hidden) {
+            updateMode();
+            stepNodes();
+            draw();
+          }
+          requestAnimationFrame(animate);
+        }
+
+        // Seguimiento de cursor desactivado en dispositivos tactiles.
+        if (!isTouchDevice) {
+          window.addEventListener("mousemove", (event) => {
+            mouse.x = event.clientX;
+            mouse.y = event.clientY;
+          });
+
+          window.addEventListener("mouseleave", () => {
+            mouse.x = null;
+            mouse.y = null;
+          });
+        }
+
+        window.addEventListener("resize", resize);
+        resize();
+
+        if (state.reducedMotion) {
+          draw();
+        } else {
+          animate();
+        }
+
+        return { setMode };
+      }
+
+      function initSectionNetworkReactions(network) {
+        const sections = document.querySelectorAll("main section[id]");
+        const observer = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) {
+              continue;
+            }
+            network.setMode(entry.target.id);
+          }
+        }, {
+          threshold: 0.2,
+          rootMargin: "-10% 0px -35% 0px"
+        });
+
+        for (const section of sections) {
+          observer.observe(section);
         }
       }
-    }
 
-    function animate() {
-      draw();
-      if (!prefersReducedMotion) {
+      // Carrusel de proyectos infinito: anima el track interno con transform.
+      function initProjectsCarousel(reducedMotion) {
+        const track = document.getElementById("projects-track");
+        if (!track) {
+          return;
+        }
+
+        const originals = Array.from(track.children).filter((node) => node instanceof HTMLElement && node.dataset.clone !== "true");
+        if (!originals.length) {
+          return;
+        }
+
+        track.querySelectorAll('[data-clone="true"]').forEach((node) => node.remove());
+        const clones = originals.map((item) => {
+          const clone = item.cloneNode(true);
+          clone.dataset.clone = "true";
+          clone.setAttribute("aria-hidden", "true");
+          return clone;
+        });
+        track.append(...clones);
+
+        let loopWidth = 0;
+        let offsetX = 0;
+        let stepSize = 280;
+        let manualAnimation = null;
+        let dragPointerActive = false;
+        let dragStartX = 0;
+        let dragStartOffset = 0;
+        let didDrag = false;
+        let resumeTimerId = null;
+        let lastTs = performance.now();
+        const pxPerSecond = reducedMotion ? 22 : 40;
+        const shell = track.closest(".projects-shell");
+        const dragSurface = shell || track;
+        const prevButton = shell ? shell.querySelector('[data-projects-nav="prev"]') : null;
+        const nextButton = shell ? shell.querySelector('[data-projects-nav="next"]') : null;
+        const nudgeDuration = reducedMotion ? 120 : 360;
+        const snapDuration = reducedMotion ? 120 : 280;
+        const pauseState = {
+          drag: false,
+          hold: false,
+          hidden: document.hidden
+        };
+
+        const isAutoplayPaused = () => pauseState.drag || pauseState.hold || pauseState.hidden;
+
+        const renderOffset = (value) => {
+          track.style.transform = `translate3d(${-value}px, 0, 0)`;
+        };
+
+        const normalizeOffset = () => {
+          if (loopWidth <= 0) {
+            offsetX = 0;
+            return;
+          }
+          offsetX = ((offsetX % loopWidth) + loopWidth) % loopWidth;
+        };
+
+        const easingOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+        const getManualCurrent = (ts) => {
+          if (!manualAnimation) {
+            return offsetX;
+          }
+          const elapsed = ts - manualAnimation.start;
+          const progress = Math.max(0, Math.min(1, elapsed / manualAnimation.duration));
+          const eased = easingOutCubic(progress);
+          return manualAnimation.from + ((manualAnimation.to - manualAnimation.from) * eased);
+        };
+
+        const clearResumeTimer = () => {
+          if (resumeTimerId !== null) {
+            window.clearTimeout(resumeTimerId);
+            resumeTimerId = null;
+          }
+        };
+
+        const scheduleResume = () => {
+          clearResumeTimer();
+          pauseState.hold = true;
+          resumeTimerId = window.setTimeout(() => {
+            pauseState.hold = false;
+            lastTs = performance.now();
+          }, 2000);
+        };
+
+        const measureLoop = () => {
+          const first = originals[0];
+          const last = originals[originals.length - 1];
+          if (!first || !last) {
+            return;
+          }
+
+          const styles = window.getComputedStyle(track);
+          const gap = parseFloat(styles.gap || "0") || 0;
+          stepSize = first.offsetWidth + gap;
+          loopWidth = (last.offsetLeft + last.offsetWidth) - first.offsetLeft + gap;
+          normalizeOffset();
+          renderOffset(offsetX);
+        };
+
+        const settleManualPosition = () => {
+          const now = performance.now();
+          if (manualAnimation) {
+            offsetX = getManualCurrent(now);
+            manualAnimation = null;
+          }
+          return now;
+        };
+
+        const nudge = (direction) => {
+          if (loopWidth <= 0) {
+            return;
+          }
+          const now = settleManualPosition();
+          normalizeOffset();
+
+          let from = offsetX;
+          if (direction < 0 && from - stepSize < 0) {
+            from += loopWidth;
+          }
+
+          const to = from + (stepSize * direction);
+          manualAnimation = { from, to, start: now, duration: nudgeDuration };
+          lastTs = now;
+        };
+
+        const snapToClosestCard = () => {
+          if (loopWidth <= 0 || stepSize <= 0) {
+            return;
+          }
+          const now = settleManualPosition();
+          const normalized = ((offsetX % loopWidth) + loopWidth) % loopWidth;
+          let snapNorm = Math.round(normalized / stepSize) * stepSize;
+          if (snapNorm >= loopWidth) {
+            snapNorm = 0;
+          }
+
+          const candidates = [snapNorm, snapNorm + loopWidth, snapNorm - loopWidth];
+          let to = candidates[0];
+          for (let i = 1; i < candidates.length; i += 1) {
+            if (Math.abs(candidates[i] - offsetX) < Math.abs(to - offsetX)) {
+              to = candidates[i];
+            }
+          }
+
+          manualAnimation = { from: offsetX, to, start: now, duration: snapDuration };
+          lastTs = now;
+        };
+
+        const beginDrag = (clientX) => {
+          if (loopWidth <= 0) {
+            return;
+          }
+          clearResumeTimer();
+          pauseState.hold = false;
+          pauseState.drag = true;
+          dragPointerActive = true;
+          didDrag = false;
+
+          settleManualPosition();
+          dragStartX = clientX;
+          dragStartOffset = offsetX;
+          shell?.classList.add("is-dragging");
+        };
+
+        const moveDrag = (clientX) => {
+          if (!dragPointerActive) {
+            return;
+          }
+          const delta = clientX - dragStartX;
+          if (Math.abs(delta) > 3) {
+            didDrag = true;
+          }
+          offsetX = dragStartOffset - delta;
+          renderOffset(offsetX);
+        };
+
+        const endDrag = () => {
+          if (!dragPointerActive) {
+            return;
+          }
+          dragPointerActive = false;
+          pauseState.drag = false;
+          shell?.classList.remove("is-dragging");
+          snapToClosestCard();
+          scheduleResume();
+          if (didDrag) {
+            window.setTimeout(() => {
+              didDrag = false;
+            }, 250);
+          }
+        };
+
+        const isNavTarget = (target) => target instanceof Element && !!target.closest(".projects-nav");
+
+        const animate = (ts) => {
+          const delta = (ts - lastTs) / 1000;
+          lastTs = ts;
+
+          if (manualAnimation && loopWidth > 0) {
+            const current = getManualCurrent(ts);
+            renderOffset(current);
+            if (ts - manualAnimation.start >= manualAnimation.duration) {
+              offsetX = manualAnimation.to;
+              normalizeOffset();
+              manualAnimation = null;
+              renderOffset(offsetX);
+            }
+          } else if (!isAutoplayPaused() && loopWidth > 0) {
+            offsetX += pxPerSecond * delta;
+            if (offsetX >= loopWidth) {
+              offsetX -= loopWidth;
+            }
+            renderOffset(offsetX);
+          }
+
+          requestAnimationFrame(animate);
+        };
+
+        prevButton?.addEventListener("click", () => nudge(-1));
+        nextButton?.addEventListener("click", () => nudge(1));
+        dragSurface.addEventListener("mousedown", (event) => {
+          if (event.button !== 0 || isNavTarget(event.target)) {
+            return;
+          }
+          beginDrag(event.clientX);
+          event.preventDefault();
+        });
+        window.addEventListener("mousemove", (event) => {
+          moveDrag(event.clientX);
+        });
+        window.addEventListener("mouseup", endDrag);
+        dragSurface.addEventListener("touchstart", (event) => {
+          if (event.touches.length !== 1 || isNavTarget(event.target)) {
+            return;
+          }
+          beginDrag(event.touches[0].clientX);
+        }, { passive: true });
+        dragSurface.addEventListener("touchmove", (event) => {
+          if (!dragPointerActive || event.touches.length !== 1) {
+            return;
+          }
+          moveDrag(event.touches[0].clientX);
+          event.preventDefault();
+        }, { passive: false });
+        window.addEventListener("touchend", endDrag, { passive: true });
+        window.addEventListener("touchcancel", endDrag, { passive: true });
+        track.addEventListener("click", (event) => {
+          if (!didDrag) {
+            return;
+          }
+          event.preventDefault();
+          event.stopPropagation();
+          didDrag = false;
+        }, true);
+
+        window.addEventListener("resize", measureLoop);
+        measureLoop();
         requestAnimationFrame(animate);
+
+        const dragHint = document.getElementById("projects-drag-hint");
+        if (dragHint) {
+          window.setTimeout(() => {
+            dragHint.classList.add("opacity-0");
+            window.setTimeout(() => {
+              dragHint.remove();
+            }, 500);
+          }, 4000);
+        }
+
+        document.addEventListener("visibilitychange", () => {
+          pauseState.hidden = document.hidden;
+          if (document.hidden) {
+            endDrag();
+          }
+          if (!document.hidden) {
+            lastTs = performance.now();
+          }
+        });
       }
-    }
+    })();
 
-    window.addEventListener("resize", () => {
-      resize();
-      createNodes();
-    });
+(() => {
+      const button = document.getElementById("mobile-menu-button");
+      const panel = document.getElementById("mobile-menu-panel");
+      const overlay = document.getElementById("mobile-menu-overlay");
+      const links = document.querySelectorAll(".mobile-nav-link");
 
-    window.addEventListener("mousemove", (event) => {
-      state.mouse.x = event.clientX;
-      state.mouse.y = event.clientY;
-    });
+      if (!button || !panel || !overlay) {
+        return;
+      }
 
-    window.addEventListener("mouseleave", () => {
-      state.mouse.x = null;
-      state.mouse.y = null;
-    });
+      const closeMenu = () => {
+        panel.classList.add("hidden");
+        overlay.classList.add("hidden");
+        button.setAttribute("aria-expanded", "false");
+      };
 
-    resize();
-    createNodes();
-    animate();
-  }
-})();
+      const openMenu = () => {
+        panel.classList.remove("hidden");
+        overlay.classList.remove("hidden");
+        button.setAttribute("aria-expanded", "true");
+      };
+
+      button.addEventListener("click", () => {
+        const isOpen = !panel.classList.contains("hidden");
+        if (isOpen) {
+          closeMenu();
+          return;
+        }
+        openMenu();
+      });
+
+      overlay.addEventListener("click", closeMenu);
+
+      for (const link of links) {
+        link.addEventListener("click", closeMenu);
+      }
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeMenu();
+        }
+      });
+    })();
+
