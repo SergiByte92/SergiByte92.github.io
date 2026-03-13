@@ -351,6 +351,9 @@
           hold: false,
           hidden: document.hidden
         };
+        const isMobileViewport = () => window.innerWidth <= 768;
+        const mobileAutoAdvanceMs = reducedMotion ? 5000 : 3200;
+        let lastMobileAdvanceTs = performance.now();
 
         const isAutoplayPaused = () => pauseState.drag || pauseState.hold || pauseState.hidden;
 
@@ -391,6 +394,7 @@
           resumeTimerId = window.setTimeout(() => {
             pauseState.hold = false;
             lastTs = performance.now();
+            lastMobileAdvanceTs = lastTs;
           }, 2000);
         };
 
@@ -518,11 +522,18 @@
               renderOffset(offsetX);
             }
           } else if (!isAutoplayPaused() && loopWidth > 0) {
-            offsetX += pxPerSecond * delta;
-            if (offsetX >= loopWidth) {
-              offsetX -= loopWidth;
+            if (isMobileViewport()) {
+              if (ts - lastMobileAdvanceTs >= mobileAutoAdvanceMs) {
+                nudge(1);
+                lastMobileAdvanceTs = ts;
+              }
+            } else {
+              offsetX += pxPerSecond * delta;
+              if (offsetX >= loopWidth) {
+                offsetX -= loopWidth;
+              }
+              renderOffset(offsetX);
             }
-            renderOffset(offsetX);
           }
 
           requestAnimationFrame(animate);
@@ -586,6 +597,7 @@
           }
           if (!document.hidden) {
             lastTs = performance.now();
+            lastMobileAdvanceTs = lastTs;
           }
         });
       }
