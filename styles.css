@@ -588,9 +588,18 @@
     }
 
     @media (max-width: 768px) {
+      .projects-shell {
+        padding: 0.25rem 2.9rem 0.85rem;
+      }
+
       .projects-shell::before,
       .projects-shell::after {
-        width: 38px;
+        display: none;
+      }
+
+      .projects-track {
+        gap: 0.75rem;
+        padding: 0.25rem 0;
       }
 
       .projects-nav {
@@ -601,8 +610,16 @@
         font-size: 1.2rem;
       }
 
+      .projects-nav--prev {
+        left: 0.35rem;
+      }
+
+      .projects-nav--next {
+        right: 0.35rem;
+      }
+
       .project-item {
-        flex-basis: min(82vw, 300px);
+        flex: 0 0 min(74vw, 290px);
         height: auto;
       }
     }
