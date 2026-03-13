@@ -598,6 +598,8 @@
       }
 
       .projects-track {
+        width: 100%;
+        max-width: 100%;
         gap: 0;
         padding: 0.25rem 0;
       }
@@ -620,6 +622,7 @@
 
       .project-item {
         flex: 0 0 100%;
+        width: 100%;
         min-width: 100%;
         max-width: 100%;
         height: auto;

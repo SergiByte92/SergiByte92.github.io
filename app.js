@@ -344,8 +344,8 @@
         const dragSurface = shell || track;
         const prevButton = shell ? shell.querySelector('[data-projects-nav="prev"]') : null;
         const nextButton = shell ? shell.querySelector('[data-projects-nav="next"]') : null;
-        const nudgeDuration = reducedMotion ? 120 : 360;
-        const snapDuration = reducedMotion ? 120 : 280;
+        const getNudgeDuration = () => (isMobileViewport() ? 1 : (reducedMotion ? 120 : 360));
+        const getSnapDuration = () => (isMobileViewport() ? 1 : (reducedMotion ? 120 : 280));
         const pauseState = {
           drag: false,
           hold: false,
@@ -410,6 +410,10 @@
           stepSize = first.offsetWidth + gap;
           loopWidth = (last.offsetLeft + last.offsetWidth) - first.offsetLeft + gap;
           normalizeOffset();
+          if (isMobileViewport() && stepSize > 0) {
+            offsetX = Math.round(offsetX / stepSize) * stepSize;
+            normalizeOffset();
+          }
           renderOffset(offsetX);
         };
 
@@ -435,7 +439,7 @@
           }
 
           const to = from + (stepSize * direction);
-          manualAnimation = { from, to, start: now, duration: nudgeDuration };
+          manualAnimation = { from, to, start: now, duration: getNudgeDuration() };
           lastTs = now;
         };
 
@@ -458,7 +462,7 @@
             }
           }
 
-          manualAnimation = { from: offsetX, to, start: now, duration: snapDuration };
+          manualAnimation = { from: offsetX, to, start: now, duration: getSnapDuration() };
           lastTs = now;
         };
 
