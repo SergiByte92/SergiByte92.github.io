@@ -308,35 +308,265 @@
         }
       }
 
-      // Tarjetas de proyectos con layout fijo y scroll horizontal nativo.
+      // Carrusel de proyectos infinito: anima el track interno con transform.
       function initProjectsCarousel(reducedMotion) {
         const track = document.getElementById("projects-track");
         if (!track) {
           return;
         }
-        const shell = track.closest(".projects-shell");
-        if (!shell) {
+
+        const originals = Array.from(track.children).filter((node) => node instanceof HTMLElement && node.dataset.clone !== "true");
+        if (!originals.length) {
           return;
         }
 
-        const prevButton = shell.querySelector('[data-projects-nav="prev"]');
-        const nextButton = shell.querySelector('[data-projects-nav="next"]');
-        const getStep = () => {
-          const firstCard = track.querySelector(".project-item");
+        track.querySelectorAll('[data-clone="true"]').forEach((node) => node.remove());
+        const clones = originals.map((item) => {
+          const clone = item.cloneNode(true);
+          clone.dataset.clone = "true";
+          clone.setAttribute("aria-hidden", "true");
+          return clone;
+        });
+        track.append(...clones);
+
+        let loopWidth = 0;
+        let offsetX = 0;
+        let stepSize = 344;
+        let manualAnimation = null;
+        let dragPointerActive = false;
+        let dragStartX = 0;
+        let dragStartOffset = 0;
+        let didDrag = false;
+        let resumeTimerId = null;
+        let lastTs = performance.now();
+        const pxPerSecond = reducedMotion ? 22 : 40;
+        const shell = track.closest(".projects-shell");
+        const dragSurface = shell || track;
+        const prevButton = shell ? shell.querySelector('[data-projects-nav="prev"]') : null;
+        const nextButton = shell ? shell.querySelector('[data-projects-nav="next"]') : null;
+        const nudgeDuration = reducedMotion ? 120 : 360;
+        const snapDuration = reducedMotion ? 120 : 280;
+        const pauseState = {
+          drag: false,
+          hold: false,
+          hidden: document.hidden
+        };
+        const isAutoplayPaused = () => pauseState.drag || pauseState.hold || pauseState.hidden;
+
+        const renderOffset = (value) => {
+          track.style.transform = `translate3d(${-value}px, 0, 0)`;
+        };
+
+        const normalizeOffset = () => {
+          if (loopWidth <= 0) {
+            offsetX = 0;
+            return;
+          }
+          offsetX = ((offsetX % loopWidth) + loopWidth) % loopWidth;
+        };
+
+        const easingOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+        const getManualCurrent = (ts) => {
+          if (!manualAnimation) {
+            return offsetX;
+          }
+          const elapsed = ts - manualAnimation.start;
+          const progress = Math.max(0, Math.min(1, elapsed / manualAnimation.duration));
+          const eased = easingOutCubic(progress);
+          return manualAnimation.from + ((manualAnimation.to - manualAnimation.from) * eased);
+        };
+
+        const clearResumeTimer = () => {
+          if (resumeTimerId !== null) {
+            window.clearTimeout(resumeTimerId);
+            resumeTimerId = null;
+          }
+        };
+
+        const scheduleResume = () => {
+          clearResumeTimer();
+          pauseState.hold = true;
+          resumeTimerId = window.setTimeout(() => {
+            pauseState.hold = false;
+            lastTs = performance.now();
+          }, 2000);
+        };
+
+        const measureLoop = () => {
+          const first = originals[0];
+          const last = originals[originals.length - 1];
+          if (!first || !last) {
+            return;
+          }
+
           const styles = window.getComputedStyle(track);
           const gap = parseFloat(styles.gap || "0") || 0;
-          return (firstCard ? firstCard.offsetWidth : 320) + gap;
+          stepSize = first.offsetWidth + gap;
+          loopWidth = (last.offsetLeft + last.offsetWidth) - first.offsetLeft + gap;
+          normalizeOffset();
+          renderOffset(offsetX);
         };
 
-        const scrollByStep = (direction) => {
-          shell.scrollBy({
-            left: getStep() * direction,
-            behavior: reducedMotion ? "auto" : "smooth"
-          });
+        const settleManualPosition = () => {
+          const now = performance.now();
+          if (manualAnimation) {
+            offsetX = getManualCurrent(now);
+            manualAnimation = null;
+          }
+          return now;
         };
 
-        prevButton?.addEventListener("click", () => scrollByStep(-1));
-        nextButton?.addEventListener("click", () => scrollByStep(1));
+        const nudge = (direction) => {
+          if (loopWidth <= 0) {
+            return;
+          }
+          const now = settleManualPosition();
+          normalizeOffset();
+
+          let from = offsetX;
+          if (direction < 0 && from - stepSize < 0) {
+            from += loopWidth;
+          }
+
+          const to = from + (stepSize * direction);
+          manualAnimation = { from, to, start: now, duration: nudgeDuration };
+          lastTs = now;
+        };
+
+        const snapToClosestCard = () => {
+          if (loopWidth <= 0 || stepSize <= 0) {
+            return;
+          }
+          const now = settleManualPosition();
+          const normalized = ((offsetX % loopWidth) + loopWidth) % loopWidth;
+          let snapNorm = Math.round(normalized / stepSize) * stepSize;
+          if (snapNorm >= loopWidth) {
+            snapNorm = 0;
+          }
+
+          const candidates = [snapNorm, snapNorm + loopWidth, snapNorm - loopWidth];
+          let to = candidates[0];
+          for (let i = 1; i < candidates.length; i += 1) {
+            if (Math.abs(candidates[i] - offsetX) < Math.abs(to - offsetX)) {
+              to = candidates[i];
+            }
+          }
+
+          manualAnimation = { from: offsetX, to, start: now, duration: snapDuration };
+          lastTs = now;
+        };
+
+        const beginDrag = (clientX) => {
+          if (loopWidth <= 0) {
+            return;
+          }
+          clearResumeTimer();
+          pauseState.hold = false;
+          pauseState.drag = true;
+          dragPointerActive = true;
+          didDrag = false;
+
+          settleManualPosition();
+          dragStartX = clientX;
+          dragStartOffset = offsetX;
+          shell?.classList.add("is-dragging");
+        };
+
+        const moveDrag = (clientX) => {
+          if (!dragPointerActive) {
+            return;
+          }
+          const delta = clientX - dragStartX;
+          if (Math.abs(delta) > 3) {
+            didDrag = true;
+          }
+          offsetX = dragStartOffset - delta;
+          renderOffset(offsetX);
+        };
+
+        const endDrag = () => {
+          if (!dragPointerActive) {
+            return;
+          }
+          dragPointerActive = false;
+          pauseState.drag = false;
+          shell?.classList.remove("is-dragging");
+          snapToClosestCard();
+          scheduleResume();
+          if (didDrag) {
+            window.setTimeout(() => {
+              didDrag = false;
+            }, 250);
+          }
+        };
+
+        const isNavTarget = (target) => target instanceof Element && !!target.closest(".projects-nav");
+
+        const animate = (ts) => {
+          const delta = (ts - lastTs) / 1000;
+          lastTs = ts;
+
+          if (manualAnimation && loopWidth > 0) {
+            const current = getManualCurrent(ts);
+            renderOffset(current);
+            if (ts - manualAnimation.start >= manualAnimation.duration) {
+              offsetX = manualAnimation.to;
+              normalizeOffset();
+              manualAnimation = null;
+              renderOffset(offsetX);
+            }
+          } else if (!isAutoplayPaused() && loopWidth > 0) {
+            offsetX += pxPerSecond * delta;
+            if (offsetX >= loopWidth) {
+              offsetX -= loopWidth;
+            }
+            renderOffset(offsetX);
+          }
+
+          requestAnimationFrame(animate);
+        };
+
+        prevButton?.addEventListener("click", () => nudge(-1));
+        nextButton?.addEventListener("click", () => nudge(1));
+        dragSurface.addEventListener("mousedown", (event) => {
+          if (event.button !== 0 || isNavTarget(event.target)) {
+            return;
+          }
+          beginDrag(event.clientX);
+          event.preventDefault();
+        });
+        window.addEventListener("mousemove", (event) => {
+          moveDrag(event.clientX);
+        });
+        window.addEventListener("mouseup", endDrag);
+        dragSurface.addEventListener("touchstart", (event) => {
+          if (event.touches.length !== 1 || isNavTarget(event.target)) {
+            return;
+          }
+          beginDrag(event.touches[0].clientX);
+        }, { passive: true });
+        dragSurface.addEventListener("touchmove", (event) => {
+          if (!dragPointerActive || event.touches.length !== 1) {
+            return;
+          }
+          moveDrag(event.touches[0].clientX);
+          event.preventDefault();
+        }, { passive: false });
+        window.addEventListener("touchend", endDrag, { passive: true });
+        window.addEventListener("touchcancel", endDrag, { passive: true });
+        track.addEventListener("click", (event) => {
+          if (!didDrag) {
+            return;
+          }
+          event.preventDefault();
+          event.stopPropagation();
+          didDrag = false;
+        }, true);
+
+        window.addEventListener("resize", measureLoop);
+        measureLoop();
+        requestAnimationFrame(animate);
 
         const dragHint = document.getElementById("projects-drag-hint");
         if (dragHint) {
@@ -347,6 +577,16 @@
             }, 500);
           }, 4000);
         }
+
+        document.addEventListener("visibilitychange", () => {
+          pauseState.hidden = document.hidden;
+          if (document.hidden) {
+            endDrag();
+          }
+          if (!document.hidden) {
+            lastTs = performance.now();
+          }
+        });
 
       }
     })();
