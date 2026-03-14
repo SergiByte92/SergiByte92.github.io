@@ -592,10 +592,32 @@
     }
 
     @media (max-width: 768px) {
+      .projects-shell::before,
+      .projects-shell::after {
+        width: 34px;
+      }
+
+      .projects-nav {
+        width: 2.55rem;
+        height: 2.55rem;
+      }
+
+      .projects-nav--prev {
+        left: 0.35rem;
+      }
+
+      .projects-nav--next {
+        right: 0.35rem;
+      }
+
+      .projects-track {
+        gap: 18px;
+      }
+
       .project-item {
-        width: 320px;
-        min-width: 320px;
-        max-width: 320px;
+        width: 260px;
+        min-width: 260px;
+        max-width: 260px;
       }
     }
 
