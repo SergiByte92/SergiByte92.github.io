@@ -292,12 +292,13 @@
 
     .projects-shell {
       position: relative;
-      overflow: hidden;
+      overflow-x: auto;
+      overflow-y: hidden;
       border-radius: 1.2rem;
       isolation: isolate;
       padding: 0.25rem 0;
-      cursor: grab;
-      touch-action: pan-y;
+      padding-bottom: 10px;
+      touch-action: pan-x;
     }
 
     .projects-shell.is-dragging {
@@ -326,13 +327,15 @@
     }
 
     .projects-track {
-      display: flex;
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 320px;
       align-items: stretch;
-      gap: 1rem;
+      gap: 24px;
       width: max-content;
       padding: 0.25rem 0.7rem 0.85rem;
-      will-change: transform;
-      transform: translate3d(0, 0, 0);
+      will-change: auto;
+      transform: none;
     }
 
     .projects-nav {
@@ -384,7 +387,10 @@
     }
 
     .project-item {
-      flex: 0 0 clamp(250px, 30vw, 330px);
+      flex: none;
+      width: 320px;
+      min-width: 320px;
+      max-width: 320px;
       height: 244px;
       min-height: 244px;
       perspective: 1300px;
@@ -588,44 +594,15 @@
     }
 
     @media (max-width: 768px) {
-      .projects-shell {
-        padding: 0.25rem 0 0.85rem;
-      }
-
-      .projects-shell::before,
-      .projects-shell::after {
-        display: none;
-      }
-
       .projects-track {
-        width: 100%;
-        max-width: 100%;
-        gap: 0;
-        padding: 0.25rem 0;
-      }
-
-      .projects-nav {
-        width: 2.75rem;
-        height: 2.75rem;
-        min-width: 44px;
-        min-height: 44px;
-        font-size: 1.2rem;
-      }
-
-      .projects-nav--prev {
-        left: 0.5rem;
-      }
-
-      .projects-nav--next {
-        right: 0.5rem;
+        grid-auto-columns: 320px;
+        gap: 24px;
       }
 
       .project-item {
-        flex: 0 0 100%;
-        width: 100%;
-        min-width: 100%;
-        max-width: 100%;
-        height: auto;
+        width: 320px;
+        min-width: 320px;
+        max-width: 320px;
       }
     }
 
