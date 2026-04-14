@@ -37,4 +37,4 @@ Portfolio web estatico orientado a presentar perfil Backend .NET Junior, stack t
 ## Autor
 - Sergi Garcia
 - GitHub: https://github.com/SergiByte92
-- LinkedIn: https://www.linkedin.com/in/sergi-garcia-53aa64212/
+- LinkedIn: https://www.linkedin.com/in/sergigarcia92/
